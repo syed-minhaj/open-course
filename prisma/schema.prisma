@@ -11,4 +11,44 @@ generator client {
 datasource db {
   provider = "postgresql"
   url      = env("DATABASE_URL")
+  directUrl = env("DIRECT_URL")
+}
+
+model User {
+  id        Int      @id @default(autoincrement())
+  email     String   @unique
+  name      String
+  image     String
+  wallet    Int      @default(0)
+  createdCourses Course[] @relation("CreatedCourses")
+  purchasedCourses Course[] @relation("Purchases")
+  cartItems Course[] @relation("CartItems")
+  reviews Review[]
+}
+
+model Course {
+  id          Int      @id @default(autoincrement())
+  name        String
+  price       Int
+  image       String
+  description String
+  creator     User     @relation("CreatedCourses", fields: [creatorId], references: [id])
+  creatorId   Int
+  buyers      User[]   @relation("Purchases")
+  inCart      User[]   @relation("CartItems")
+  reviews     Review[]
+  reviewCount Int      @default(0)
+  userCount   Int      @default(0)  // New field to track number of users
+  avgRating   Float    @default(0)  // New field to track average rating
+}
+
+model Review {
+  id        Int      @id @default(autoincrement())
+  rating    Int
+  comment   String?
+  createdAt DateTime @default(now())
+  user      User     @relation(fields: [userId], references: [id])
+  userId    Int
+  course    Course   @relation(fields: [courseId], references: [id])
+  courseId  Int
 }
