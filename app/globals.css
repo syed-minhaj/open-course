@@ -3,9 +3,30 @@
 @tailwind utilities;
 
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
-  
+  --color-primary: hsl(183, 50%, 90%);
+  --color-prePrimary: hsl(183, 50%, 95%);
+  --color-secondary: hsl(183, 50%, 10%);
+  --color-tertiary: hsl(243, 80%, 20%);
+  --color-accent: hsl(123, 80%, 20%);
+}
+.dark {
+  --color-primary: hsl(183, 50%, 10%);
+  --color-prePrimary: hsl(183, 50%, 15%);
+  --color-secondary: hsl(183, 50%, 90%);
+  --color-tertiary: hsl(243, 80%, 80%);
+  --color-accent: hsl(123, 80%, 80%);
+}
+
+.text-primary{
+  @apply text-gray-900 dark:text-gray-100
+}
+
+.text-secondary{
+  @apply text-gray-800 dark:text-gray-200
+}
+
+.text-tertiary{
+  @apply text-gray-700 dark:text-gray-300
 }
 
 @media (prefers-color-scheme: dark) {
@@ -16,7 +37,5 @@
 }
 
 body {
-  color: var(--foreground);
-  background: var(--background);
   font-family: Arial, Helvetica, sans-serif;
 }

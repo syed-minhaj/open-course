@@ -15,10 +15,11 @@ datasource db {
 }
 
 model User {
-  id        Int      @id @default(autoincrement())
+  id        String      @id @default(uuid())
   email     String   @unique
   name      String
   image     String
+  bio       String?
   wallet    Int      @default(0)
   createdCourses Course[] @relation("CreatedCourses")
   purchasedCourses Course[] @relation("Purchases")
@@ -27,13 +28,15 @@ model User {
 }
 
 model Course {
-  id          Int      @id @default(autoincrement())
+  id          String      @id @default(uuid())
   name        String
   price       Int
   image       String
   description String
+  modules     Modules[]
+  modulesCount Int      @default(0)
   creator     User     @relation("CreatedCourses", fields: [creatorId], references: [id])
-  creatorId   Int
+  creatorId   String
   buyers      User[]   @relation("Purchases")
   inCart      User[]   @relation("CartItems")
   reviews     Review[]
@@ -42,13 +45,22 @@ model Course {
   avgRating   Float    @default(0)  // New field to track average rating
 }
 
+model Modules {
+  id        String      @id @default(uuid())
+  name      String
+  image     String?
+  matarialLink      String
+  course    Course   @relation(fields: [courseId], references: [id])
+  courseId         String
+}
+
 model Review {
-  id        Int      @id @default(autoincrement())
+  id        String      @id @default(uuid())
   rating    Int
   comment   String?
   createdAt DateTime @default(now())
   user      User     @relation(fields: [userId], references: [id])
-  userId    Int
+  userId    String
   course    Course   @relation(fields: [courseId], references: [id])
-  courseId  Int
+  courseId  String
 }
