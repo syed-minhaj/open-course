@@ -4,7 +4,7 @@ import Main from './Main';
 import { getServerSession } from "next-auth";
 import { redirect } from "next/navigation";
 import { adminUser, nonAdminUser } from "@/app/types";
-
+import { connection } from "next/server";
 interface PageProps {
     params: {
         id: string
@@ -20,6 +20,7 @@ const getUser = async(id: string) => {
 }
 
 export default async function UserPage({params} : any) {
+    await connection()
     if(!params){
         redirect('/')
     }

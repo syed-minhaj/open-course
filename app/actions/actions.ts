@@ -62,7 +62,7 @@ export async function changeImage(id : string, image : File){
         .upload(filePath, image, {
             upsert: true,
         })
-    const url = await supabase.storage
+    const url = supabase.storage
         .from('profile_image')
         .getPublicUrl(filePath);
 

@@ -1,6 +1,5 @@
 "use client";
 import { adminUser, nonAdminUser } from "@/app/types";
-import EditPencil from "../../../svg/EditPencil";
 import Edit from "./Edit";
 import { changeBio, changeImage } from "@/app/actions/actions";
 import { ChangeEvent } from "react";
@@ -12,7 +11,7 @@ import { useState , useEffect } from "react";
 const Profile = ({user , admin , id} : {user: adminUser | nonAdminUser, admin: boolean, id: string}) => {
     
     const [mounted, setMounted] = useState(false);
-
+    const [imageUploading , setImageUploading] = useState(false);
     //function select_image(){
         // useEffect(() => {
         //     const fileInput = document.createElement('input');
@@ -54,6 +53,7 @@ const Profile = ({user , admin , id} : {user: adminUser | nonAdminUser, admin: b
         fileInput.style.display = 'none';
         fileInput.onchange = async (e) => {
             let image = fileInput.files?.[0];
+            setImageUploading(true);
             console.log(3,image);
             if (image) {
                 if (image.size > (200 * 1024)) {
@@ -67,16 +67,17 @@ const Profile = ({user , admin , id} : {user: adminUser | nonAdminUser, admin: b
                     image = new File([file.blob], image.name, {
                         type: image.type,
                     })
-                        
                 }
-                changeImage(id, image)
+                changeImage(id, image).then((res:unknown)=>{
+                    setImageUploading(false);
+                })
             }
         }
         fileInput.click()
     }
     
     function onFunc(){
-        changeBio(id , "ba ba ba").then((res:unknown)=>{
+        changeBio(id , "nknknkkpop").then((res:unknown)=>{
             console.log("done",res)
         })
 
@@ -86,7 +87,8 @@ const Profile = ({user , admin , id} : {user: adminUser | nonAdminUser, admin: b
             <div className="gap-5 w-full flex flex-col md:flex-row  ">
                 
                 <div className="relative inline-block w-28 md:w-36">
-                    <Image src={`${user.image}`} className="bg-accent aspect-square w-28 md:w-36 rounded-full"
+                    <Image src={`${user.image}`} className={`bg-accent aspect-square w-28 md:w-36 rounded-full 
+                        ${imageUploading === true ? "animate-pulse" : ""}`}
                         alt="profile image" width={144} height={144} />
                     <Edit background={true} onTop={true} func={()=>{select_image()} }
                     className={'size-4 opacity-50 group-hover:opacity-80 '} />
