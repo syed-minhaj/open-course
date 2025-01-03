@@ -12,7 +12,7 @@ export async function validateUserAccess(requestedEmail: string) {
       throw new Error("Unauthorized: You can only access your own data")
     }
   
-    return session
+    return true
 }
 
 

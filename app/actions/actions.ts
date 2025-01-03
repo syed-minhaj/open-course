@@ -8,7 +8,7 @@ import { revalidatePath } from "next/cache";
 async function varifyUserByID(id: string){
     try{
         const email = await getUserByID(id);
-        await validateUserAccess(email?.email ?? " ");
+        return await validateUserAccess(email?.email ?? " ");
     }catch(e : unknown){
         return e;
     }
@@ -32,22 +32,21 @@ export async function getUserByID(id: string){
     })
 }
 
-export async function changeBio(id : string, bio : string){
-    varifyUserByID(id);
-    const u = await prisma.user.update({
+export async function changeUserBio(id : string, newbio : string | null){
+    if(await varifyUserByID(id) != true){return}
+    await prisma.user.update({
         where: {
             id: id
         },
         data: {
-            bio: bio
+            bio: newbio
         }
     })
     revalidatePath(`/user/${id}`)
-    return u.bio;
 }
 
 export async function changeImage(id : string, image : File){
-    varifyUserByID(id);
+    if(await varifyUserByID(id) != true){return}
     if (!image) {
         throw new Error('No file provided');
     }
@@ -76,4 +75,17 @@ export async function changeImage(id : string, image : File){
         }
     })
     revalidatePath(`/user/${id}`)  
+}
+
+export async function changeUserName(id:string , newName:string){
+    if(await varifyUserByID(id) != true){return}
+    await prisma.user.update({
+        where:{
+            id:id
+        },
+        data:{
+            name:newName
+        }
+    })
+    revalidatePath(`/user/${id}`)
 }

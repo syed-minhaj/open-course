@@ -25,6 +25,7 @@ model User {
   purchasedCourses Course[] @relation("Purchases")
   cartItems Course[] @relation("CartItems")
   reviews Review[]
+  @@index([email,id])
 }
 
 model Course {
