@@ -11,34 +11,32 @@ const ImageComponent = ({user, admin} : {user: adminUser | nonAdminUser, admin: 
     const [imageUploading , setImageUploading] = useState(false);
     
 
-    function select_image(){
-        const fileInput = document.createElement('input');
-        fileInput.type = 'file';
-        fileInput.accept = 'image/*';
-        fileInput.style.display = 'none';
-        fileInput.onchange = async (e) => {
-            let image = fileInput.files?.[0];
-            setImageUploading(true);
-            console.log(3,image);
-            if (image) {
-                if (image.size > (200 * 1024)) {
-                    let {file , error} = await resizeFile(image,  200,  "KB");
-                    if (error) {
-                        throw new Error(error);
-                    }
-                    if (!file) {
-                        throw new Error('No file provided');
-                    }
-                    image = new File([file.blob], image.name, {
-                        type: image.type,
-                    })
+
+    async function select_image(image : File | undefined){
+        
+        if(!image){return}
+        
+        setImageUploading(true);
+        console.log(3,image);
+        if (image) {
+            if (image.size > (200 * 1024)) {
+                let {file , error} = await resizeFile(image,  200,  "KB");
+                if (error) {
+                    throw new Error(error);
                 }
-                changeImage(id, image).then((res:unknown)=>{
-                    setImageUploading(false);
+                if (!file) {
+                    throw new Error('No file provided');
+                }
+                image = new File([file.blob], image.name, {
+                    type: image.type,
                 })
             }
+            console.log("done")
+            changeImage(id, image).then((res:unknown)=>{
+                setImageUploading(false);
+            })
         }
-        fileInput.click()
+        
     }
 
     return (
@@ -47,8 +45,11 @@ const ImageComponent = ({user, admin} : {user: adminUser | nonAdminUser, admin: 
             ${imageUploading === true ? "animate-pulse" : ""}`}
             alt="profile image" width={144} height={144} />
         {admin === true ?
-            <Edit background={true} onTop={true} func={()=>{select_image()} }
+            <>
+            <Edit background={true} onTop={true} func={()=>{document.getElementById('image_input')?.click()}}
             className={'size-4 opacity-50 group-hover:opacity-80 '} />
+            <input id="image_input" type="file" accept="image/*" className="hidden" onChange={(e)=>{select_image(e.target.files?.[0])}} />
+            </>
         : null}
         </>
     )
