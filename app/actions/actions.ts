@@ -4,6 +4,7 @@ import {prisma} from "../lib/prisma";
 import { validateUserAccess } from "../utils/validate_user";
 import { resizeFile }  from "../utils/imageResize";
 import { revalidatePath } from "next/cache";
+import { Course_created as Course, module_created as module } from "../types";
 
 async function varifyUserByID(id: string){
     try{
@@ -12,6 +13,11 @@ async function varifyUserByID(id: string){
     }catch(e : unknown){
         return e;
     }
+}
+
+export async function revalidatePath_fromClient(path:string){
+    revalidatePath(path);
+    return;
 }
 
 const supabase = createClient(
@@ -88,4 +94,74 @@ export async function changeUserName(id:string , newName:string){
         }
     })
     revalidatePath(`/user/${id}`)
+}
+
+export async function createCourse (course :Course) {
+    
+    if(await varifyUserByID(course.creatorId) != true){
+        return {course_id: null , creator_id: null} 
+    }
+    const filePath = `${course.creatorId}/${Math.round(Math.random()*1000000)}/course.jpg`;
+    
+    await supabase.storage
+    .from('course_image')
+    .upload(filePath, course.image, {
+        upsert: true,
+    })
+    
+    const url = supabase.storage
+        .from('course_image')
+        .getPublicUrl(filePath);
+    const courseData = await prisma.course.create({
+        data: {
+            name : course.name,
+            image : url.data.publicUrl,
+            description : course.description,
+            creatorId : course.creatorId,
+            price : course.price,
+
+        }
+    })
+    return { course_id:courseData.id , creator_id: course.creatorId };
+}
+export const createModule = async (module : module , courseId : string , creatorId : string) => {
+
+    if(await varifyUserByID(creatorId) != true){return}
+    const filePath = `${creatorId}/${courseId}/${Math.round(Math.random()*100000)}/module.jpg`;
+    let url :string |null = null;
+    if(module.modelImage){
+        await supabase.storage
+        .from('module_image')
+        .upload(filePath, module.modelImage, {
+            upsert: true,
+        })
+        
+        const urlObject = supabase.storage
+            .from('module_image')
+            .getPublicUrl(filePath);
+        url = urlObject.data.publicUrl;
+    }
+    if(url){
+        await prisma.modules.create({
+            data: {
+                name : module.modelName,
+                indexInCourse : module.indexInCourse,
+                image: url,
+                courseId : courseId,
+                matarialLink : module.materialLink,
+            }
+        })
+        
+    }else{
+        await prisma.modules.create({
+            data: {
+                name : module.modelName,
+                indexInCourse : module.indexInCourse,
+                courseId : courseId,
+                matarialLink : module.materialLink,
+            }
+        })
+    }
+    
+    
 }

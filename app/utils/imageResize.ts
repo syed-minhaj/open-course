@@ -1,7 +1,7 @@
 "use client";
 
 
-export async function resizeFile  (file: File, targetSize: number, sizeUnit: string) {
+export async function resizeFile  (file: File, targetSize: number, sizeUnit: "KB" | "MB") {
     
 
     const targetSizeInBytes = targetSize * (sizeUnit === "MB" ? 1024 * 1024 : 1024);
@@ -43,7 +43,6 @@ export async function resizeFile  (file: File, targetSize: number, sizeUnit: str
         size: resizedFile.size,
       };
 
-      console.log(returnFile)
       return {"file":returnFile ,"error":null};
     } catch (err) {
       throw err;

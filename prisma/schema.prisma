@@ -51,6 +51,7 @@ model Modules {
   name      String
   image     String?
   matarialLink      String
+  indexInCourse Int
   course    Course   @relation(fields: [courseId], references: [id])
   courseId         String
 }

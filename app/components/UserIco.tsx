@@ -22,7 +22,6 @@ const UserIco = ({userImage}:{userImage : string}) => {
     useEffect(() => {
         setMounted(true);
         setV(Date.now());
-        console.log(Date.now());
     }, []);
 
     
@@ -35,7 +34,7 @@ const UserIco = ({userImage}:{userImage : string}) => {
   
     return (
       
-      <div className="flex flex-col gap-2 ml-auto z-30 ">
+      <div className="flex flex-col gap-2 ml-auto z-10 ">
             <button onClick={() => {setOpen(!open)}}
              className="flex rounded-full  p-1 ml-auto ">
                 <Image 

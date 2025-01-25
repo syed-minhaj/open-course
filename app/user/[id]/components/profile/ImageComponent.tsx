@@ -17,7 +17,6 @@ const ImageComponent = ({user, admin} : {user: adminUser | nonAdminUser, admin: 
         if(!image){return}
         
         setImageUploading(true);
-        console.log(3,image);
         if (image) {
             if (image.size > (200 * 1024)) {
                 let {file , error} = await resizeFile(image,  200,  "KB");
@@ -31,7 +30,6 @@ const ImageComponent = ({user, admin} : {user: adminUser | nonAdminUser, admin: 
                     type: image.type,
                 })
             }
-            console.log("done")
             changeImage(id, image).then((res:unknown)=>{
                 setImageUploading(false);
             })
