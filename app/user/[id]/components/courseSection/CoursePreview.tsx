@@ -28,12 +28,7 @@ const CoursePreviw = ({course, index, admin } : {course: Course, index: number, 
             <div className="flex flex-col justify-start flex-1 gap-1 text-secondary">
                 <h2 className="  ">{course.name}</h2>
                 <p className="h-32 md:h-auto max-h-32 min-h-24 overflow-y-clip font-light text-sm opacity-65 ">
-                    {index == 0 ? `{ffdfdf fs fef emnf cefm slfmenks fcnkd skfndk fnkd fdkalnf ndsaf kndklf dfndkfnslfnsl fn sfnlds nfdslkfa ndla nfdlk afldanfc mfdfdf
-                    df df fdgdmkgmdl samfld sakelnfffdfdf fs fef emnf cefm slfmenks fcnkd skfndk fnkd fdkalnf ndsaf kndklf dfndkfnslfnsl fn sfnlds nfdslkfa ndla nfdlk afldanfc mfd
-                    fdfdf df dfd fdgdmkgmdl samfld sakelnf ffdfdf fs fef emnf cefm slfmenks fcnkd skfndk fnkd fdkalnf ndsaf kndklf dfndkfnslfnsl fn sfnlds nfdslkfa ndla nfdlk afldanfc mfd
-                    fdf df df dfd fdgdmkgmdl samfld sakelnf ks fcnkd skfndk fnkd fdkalnf ndsaf kndklf dfndkfnslfnsl fn sfnlds nfdslkfa ndla nfdlk afldanfc mfd
-                    fdfdf df dfd fdgdmkgmdl samfld sakelnf ffdfdf fs fef emnf cefm ks fcnkd skfndk fnkd fdkalnf ndsaf kndklf dfndkfnslfnsl fn sfnlds nfdslkfa ndla nfdlk afldanfc mfd
-                    fdfdf df dfd fdgdmkgmdl samfld sakelnf ffdfdf fs fef emnf cefm }` : course.description}
+                    {course.description}
                 </p>
                 <div className="md:hidden p-1 text-accent border border-accent rounded-md flex flex-row 
                 gap-1 h-[22] relative text-sm/4 w-fit ">
