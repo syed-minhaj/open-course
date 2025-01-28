@@ -119,7 +119,7 @@ const CreationWindow = ({user, admin , setWindowOpen} : {user: adminUser | nonAd
                     <h2 className="text-sm  text-primary p-1  ">Add Modules</h2>
                     <AddModule moduleAdded={modelAdded}/>
                     <Reorder.Group className="flex flex-col gap-1" as="ol" 
-                    values={modules} onReorder={afterReorder} axis="y" style={{overflowY: 'scroll'}}>
+                    values={modules} onReorder={afterReorder} axis="y" >
                     {modules.map((module : module , index)=>{
                         return (
                            <EditModule moduleEdited={modelEdited} module={module} key={index} index={index}/>  
