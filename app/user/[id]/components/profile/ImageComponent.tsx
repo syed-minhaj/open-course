@@ -39,9 +39,10 @@ const ImageComponent = ({user, admin} : {user: adminUser | nonAdminUser, admin: 
 
     return (
         <>  
-        <Image src={`${user.image}`} className={`bg-accent aspect-square w-28 md:w-36 rounded-full 
+        <Image src={`${user.image}`} alt="profile image" width={144} height={144}
+            className={`bg-accent aspect-square w-28 md:w-36 rounded-full 
             ${imageUploading === true ? "animate-pulse" : ""}`}
-            alt="profile image" width={144} height={144} />
+        />
         {admin === true ?
             <>
             <Edit background={true} onTop={true} func={()=>{document.getElementById('image_input')?.click()}}

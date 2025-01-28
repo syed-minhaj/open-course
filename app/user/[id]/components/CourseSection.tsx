@@ -1,6 +1,6 @@
 "use client"
 import { adminUser, nonAdminUser , Course} from "@/app/types";
-import { useState } from "react";
+import { useState , Suspense } from "react";
 import CreationWindow from "./courseSection/CreationWindow";
 import {PackagePlus} from "lucide-react";
 import CoursePreview from "./courseSection/CoursePreview";
@@ -21,7 +21,10 @@ const CourseSection = ({user, admin , course} : {user: adminUser | nonAdminUser,
             </div>
 
             {windowOpen ? 
-                <CreationWindow user={user} admin={admin} setWindowOpen={setWindowOpen} /> 
+                <Suspense fallback={<div className="w-screen h-screen fixed top-0 left-0 z-20  
+                    bg-black bg-opacity-25 backdrop-blur-sm flex justify-center items-center"></div>}>
+                    <CreationWindow user={user} admin={admin} setWindowOpen={setWindowOpen} /> 
+                </Suspense>
             : null}
             </>
             : null
