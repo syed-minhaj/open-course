@@ -43,6 +43,20 @@ const CreationWindow = ({user, admin , setWindowOpen} : {user: adminUser | nonAd
         setModules(updatedModules);
     }
 
+    const resizeImage = async (i: File) => {
+        setIsCreating(`Resizing ${i.name} Image ...`);
+        if (i.size > 200 * 1024) {
+            const { file, error } = await resizeFile(i, 200, 'KB');
+            if (error) throw new Error(error);
+            if (!file) throw new Error('no file provided');
+            return new File([file.blob], i.name, {
+                type: i.type,
+            });
+        }
+        setIsCreating(true);
+        return i;
+    };
+
     async function create_Course() {
         if (!name || !description || !image) {
             alert("Course name , description and image are required");
@@ -51,23 +65,9 @@ const CreationWindow = ({user, admin , setWindowOpen} : {user: adminUser | nonAd
         setIsCreating(true);
 
         try {
-            const resizeImage = async (i: File) => {
-                setIsCreating(`Resizing ${i.name} Image ...`);
-                if (i.size > 200 * 1024) {
-                    const { file, error } = await resizeFile(i, 200, 'KB');
-                    if (error) throw new Error(error);
-                    if (!file) throw new Error('no file provided');
-                    return new File([file.blob], i.name, {
-                        type: i.type,
-                    });
-                }
-                setIsCreating(true);
-                return i;
-            };
 
             const resizedModules = await Promise.all(
                 modules.map(async (m) => ({
-
                     indexInCourse: m.indexInCourse,
                     modelName: m.modelName,
                     materialLink: m.materialLink,
@@ -83,6 +83,7 @@ const CreationWindow = ({user, admin , setWindowOpen} : {user: adminUser | nonAd
                 creatorId: user.id,
                 price: 0,
             };
+            setIsCreating(`Creating ${course.name} ...`);
             const {course_id , creator_id} = await createCourse({...course, modules: []});
             if(!course_id || !creator_id){return}
             await Promise.all(course.modules.map(async (module : module) => {
@@ -117,11 +118,11 @@ const CreationWindow = ({user, admin , setWindowOpen} : {user: adminUser | nonAd
                     <CourseInfo setImage={setImage} setName={setName} setDescription={setDescription}/>
                     <h2 className="text-sm  text-primary p-1  ">Add Modules</h2>
                     <AddModule moduleAdded={modelAdded}/>
-                    <Reorder.Group className="flex flex-col gap-1" as="ol" values={modules} onReorder={afterReorder}>
+                    <Reorder.Group className="flex flex-col gap-1" as="ol" 
+                    values={modules} onReorder={afterReorder} axis="y" style={{overflowY: 'scroll'}}>
                     {modules.map((module : module , index)=>{
                         return (
-                           <EditModule moduleEdited={modelEdited} module={module} key={index} index={index}/>
-                            
+                           <EditModule moduleEdited={modelEdited} module={module} key={index} index={index}/>  
                         )
                     })}
                     </Reorder.Group>

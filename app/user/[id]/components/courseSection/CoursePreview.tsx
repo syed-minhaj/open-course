@@ -37,12 +37,12 @@ const CoursePreviw = ({course, index, admin } : {course: Course, index: number, 
                 </p>
                 <div className="md:hidden p-1 text-accent border border-accent rounded-md flex flex-row 
                 gap-1 h-[22] relative text-sm/4 w-fit ">
-                    <Package className="w-[14] h-[14]  "/> {course.modules.length}
+                    <Package size={14} className="w-[14] h-[14]  "/> {course.modules.length}
                 </div>
             </div>
             <div className="md:flex flex-row justify-between hidden gap-3 text-sm ">
                 <div className="p-1 text-accent border border-accent rounded-md flex flex-row gap-1 h-[22] relative text-sm/4 ">
-                    <Package className="w-[14] h-[14]  "/> {course.modules.length}
+                    <Package size={14} className="w-[14] h-[14]  "/> {course.modules.length}
                 </div>
                 <Link href={`/course/${course.id}`} className="md:ml-auto text-accent hover:opacity-65">
                     details

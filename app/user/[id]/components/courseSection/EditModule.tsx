@@ -45,7 +45,6 @@ const EditModule = ({moduleEdited , module , index} : {moduleEdited: (modules: m
         key={module.modelName} 
         value={module}
         className="w-full"
-        layout
         dragListener={false} dragControls={controls}
       >
         {!isEditting ? (

@@ -6,7 +6,9 @@ import {PackagePlus} from "lucide-react";
 import CoursePreview from "./courseSection/CoursePreview";
 
 const CourseSection = ({user, admin , course} : {user: adminUser | nonAdminUser, admin: boolean, course: Course[]}) => {
+    
     const [windowOpen , setWindowOpen] = useState(false);
+    
     return(
         <div className="w-full min-h-36 flex flex-col gap-2 ">
             {admin ? 
