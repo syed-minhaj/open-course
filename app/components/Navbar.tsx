@@ -1,6 +1,6 @@
 
 import React from "react";
-import UserIco from "../../../components/UserIco";
+import UserIco from "./UserIco";
 import { prisma } from "@/app/lib/prisma";
 import { getServerSession } from "next-auth";
 import { redirect } from "next/navigation";

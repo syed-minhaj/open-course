@@ -1,5 +1,5 @@
 import { prisma } from "@/app/lib/prisma";
-import Navbar from "./components/Navbar";
+import Navbar from "@/app/components/Navbar";
 import { getServerSession } from "next-auth";
 import { redirect } from "next/navigation";
 import { adminUser, nonAdminUser } from "@/app/types";

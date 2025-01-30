@@ -3,7 +3,7 @@ import { adminUser, nonAdminUser , Course} from "@/app/types";
 import { useState , Suspense } from "react";
 import CreationWindow from "./courseSection/CreationWindow";
 import {PackagePlus} from "lucide-react";
-import CoursePreview from "./courseSection/CoursePreview";
+import CoursePreview from "@/app/components/CoursePreview";
 
 const CourseSection = ({user, admin , course} : {user: adminUser | nonAdminUser, admin: boolean, course: Course[]}) => {
     
