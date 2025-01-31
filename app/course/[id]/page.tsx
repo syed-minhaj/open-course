@@ -79,7 +79,7 @@ export default async function CoursePage({params} : any) {
                 <h1 className="text-4xl font-bold m-2 ">
                     Course not found
                 </h1>
-                <a className="m-2 p-2 rounded bg-prePrimary text-xl ">Home</a>
+                <a href={'/'} className="m-2 p-2 rounded bg-prePrimary text-xl ">Home</a>
             </div>
         )
     }
