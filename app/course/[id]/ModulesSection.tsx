@@ -7,7 +7,9 @@ const ModulesSection = ({modules , owned} : {modules : module[], owned : boolean
         <div className="w-11/12 sm:w-10/12 md:w-9/12 my-20  flex gap-2 flex-col items-center justify-center">
             {modules.map((module , index)=>{
                 return(
-                    <Module module={module} owned={owned} index={index}/>
+                    <div className="w-full" key={index}>
+                        <Module module={module} owned={owned}/>
+                    </div>
                 )
             })}
         </div>
