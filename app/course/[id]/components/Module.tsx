@@ -18,7 +18,7 @@ const Module = ({module , owned } : {module : module, owned : boolean }) => {
                 <div className=" py-2 ">
                     <div className="flex flex-row items-center">
                         <h3 className="text-l  text-primary min-w-fit ">Resourse : </h3>
-                        <a href={"https://" + module.matarialLink} target="_blank" className="flex-1 text-accent break-all font-medium">
+                        <a href={module.matarialLink} target="_blank" className="flex-1 text-accent break-all font-medium">
                             {module.matarialLink}
                             <SquareArrowOutUpRight size={20} className="inline ml-2 font-medium " />
                         </a>
