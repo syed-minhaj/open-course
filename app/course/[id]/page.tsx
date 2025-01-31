@@ -75,10 +75,11 @@ export default async function CoursePage({params} : any) {
 
     if(!course){
         return (
-            <div className="flex flex-col items-center  min-h-screen bg-primary relative ">
-                <h1 className="text-4xl font-bold">
+            <div className="flex flex-col items-center justify-center min-h-screen bg-primary relative ">
+                <h1 className="text-4xl font-bold m-2 ">
                     Course not found
                 </h1>
+                <a className="m-2 p-2 rounded bg-prePrimary text-xl ">Home</a>
             </div>
         )
     }

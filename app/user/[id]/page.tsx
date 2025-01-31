@@ -75,7 +75,7 @@ export default async function UserPage({params} : any) {
     }
     
     return (
-        <div id="user-page" className="flex flex-col items-center  min-h-screen bg-primary relative ">
+        <div className="flex flex-col items-center  min-h-screen bg-primary relative ">
             <header className="w-full">
                 <Navbar />
             </header>
