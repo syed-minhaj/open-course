@@ -1,5 +1,5 @@
 
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import ImageInput from "./ImageInput";
 import { CheckCheck , Pencil ,MoveVertical} from "lucide-react";
 import { module_created as module } from "@/app/types";
@@ -39,7 +39,32 @@ const EditModule = ({moduleEdited , module , index} : {moduleEdited: (modules: m
       moduleEdited(updatedModule);
       setIsEditting(false);
     }
-  
+    const elementRef = useRef<HTMLDivElement>(null);
+
+    const handleDragStart = (event: React.PointerEvent | React.TouchEvent): void => {
+      event.preventDefault();
+      
+      if ('touches' in event) {
+        const touch = event.touches[0];
+        // Create a synthetic pointer event
+        const pointerEvent = new PointerEvent('pointerdown', {
+          clientX: touch.clientX,
+          clientY: touch.clientY,
+          pointerId: 1,
+          pointerType: 'touch',
+          bubbles: true
+        });
+        
+        if (elementRef.current) {
+          elementRef.current.dispatchEvent(pointerEvent);
+        }
+      } else {
+        controls.start(event);
+      }
+    };
+
+    
+
     return (
       <Reorder.Item
         key={module.modelName} 
@@ -50,8 +75,12 @@ const EditModule = ({moduleEdited , module , index} : {moduleEdited: (modules: m
         {!isEditting ? (
           <div className="w-full flex flex-row gap-1 bg-opacity-25 bg-white rounded flex-wrap 
               dark:bg-opacity-15 dark:bg-black p-2 border dark:border-black border-white">
-            <MoveVertical onPointerDown={(e) => controls.start(e)} 
-             className="w-6 h-6 my-auto opacity-30  reorder-handle cursor-pointer" />
+            <div ref={elementRef} className="h-fit w-fit reorder-handle cursor-move touch-none my-auto "
+              onPointerDown={(e) => controls.start(e)}
+              onTouchStart={handleDragStart}
+            >
+              <MoveVertical className="w-6 h-6  opacity-30 "/>
+            </div>
             <h1 className="text-primary p-2 m-auto">{index + 1}</h1>
             {imageUrl && (
                 <img
