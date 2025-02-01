@@ -101,12 +101,12 @@ export default async function CoursePage({params} : any) {
     }
 
     return (
-        <div className="flex flex-col items-center  min-h-screen bg-primary relative ">
-            <header className="w-full bg-prePrimary ">
+        <div className="flex flex-col items-center  min-h-screen  bg-primary relative ">
+            <header className="w-full z-40 ">
                 <Navbar />
             </header>
-            <main className="w-full flex flex-col items-center">
-                <Hero course={{name : course.name , description : course.description , price : course.price}} />
+            <main className="w-full flex flex-col items-center absolute top-0  bg-primary ">
+                <Hero course={{name : course.name , description : course.description , price : course.price , image: course.image}} />
                 <ModulesSection modules={course.modules} owned={await owned()} />
             </main>
         </div>

@@ -1,16 +1,20 @@
+
 import { ShoppingCart } from "lucide-react";
 import ExpandableDescription from "./components/DescriptionComponent";
 
 type course = {
     name: string,
     description: string,
-    price: number
+    price: number,
+    image: string
 }
 
 const Hero = ({course} : {course :course}) => {
     return(
-        <div className="min-h-[65dvh] w-full bg-prePrimary text-primary flex  justify-center">
-            <div className="w-11/12 my-[20dvh] ">
+        <div style={{backgroundImage: `url(${course.image})`}}
+        className="min-h-[clac(65dvh+70px)] w-full z-10 text-primary flex bg-cover justify-center relative bg-center ">
+            <div className="bg-white dark:bg-black absolute top-0 right-0 left-0 bottom-0 opacity-65 dark:opacity-65 z-20  backdrop-blur-md "></div>
+            <div className="w-11/12 my-[20dvh] mt-[calc(20dvh+70px)] z-30 text-primary ">
                 <h1 className="text-4xl font-bold  ">
                     {course.name}
                 </h1>
