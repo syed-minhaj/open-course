@@ -4,13 +4,10 @@ import { Course, module } from "@/app/types";
 import Navbar from "@/app/components/Navbar";
 import { getServerSession } from "next-auth";
 import { redirect } from "next/navigation";
-import Image from "next/image";
-import ExpandableDescription from "./components/DescriptionComponent";
-import { ShoppingCart } from "lucide-react";
 import Hero from "./Hero";
 import ModulesSection from "./ModulesSection";
 
-const getCourseById = async (id:string)=>{
+const getCourseById = async(id:string) => {
     const course : Omit<Course,"modules"> | null = await prisma.course.findUnique({
         where: {
             id: id
@@ -106,7 +103,8 @@ export default async function CoursePage({params} : any) {
                 <Navbar />
             </header>
             <main className="w-full flex flex-col items-center absolute top-0  bg-primary ">
-                <Hero course={{name : course.name , description : course.description , price : course.price , image: course.image}} />
+                <Hero owned={await owned()} 
+                course={{id : course.id , name : course.name , description : course.description , price : course.price , image: course.image}} />
                 <ModulesSection modules={course.modules} owned={await owned()} />
             </main>
         </div>

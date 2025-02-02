@@ -1,15 +1,30 @@
-
+"use client"
 import { ShoppingCart } from "lucide-react";
 import ExpandableDescription from "./components/DescriptionComponent";
+import { BuyCourse } from "@/app/actions/course";
+import OrderSection from "./components/OrderSection";
 
 type course = {
+    id: string,
     name: string,
     description: string,
     price: number,
     image: string
 }
 
-const Hero = ({course} : {course :course}) => {
+const Hero = ({owned ,  course} : {owned : boolean , course : course}) => {
+
+    function Buy(){
+        if(!owned){
+            // do you want to buy this course
+            alert("You want to buy this course");
+            
+            BuyCourse(course.id).then(()=>{
+                alert("Course bought");
+            })
+        }
+    }
+
     return(
         <div style={{backgroundImage: `url(${course.image})`}}
         className="min-h-[clac(65vh+70px)] w-full z-10 text-primary flex bg-cover justify-center relative bg-center ">
@@ -19,15 +34,10 @@ const Hero = ({course} : {course :course}) => {
                     {course.name}
                 </h1>
                 <ExpandableDescription description={course.description} />
-                <div className="flex gap-1 flex-col sm:flex-row-reverse sm:w-fit font-semibold mt-5 ">
-                    <button className="p-2 rounded bg-accent text-[--color-primary] min-w-[91] "> 
-                        { course.price == 0 ? 'Free' : '$'+course.price } 
-                    </button>
-                    <button className="p-2 rounded border border-accent flex flex-row justify-center min-w-[91]  "> 
-                        <ShoppingCart />
-                        Cart 
-                    </button>
-                </div>
+                {!owned ? 
+                    <OrderSection courseID={course.id} coursePrice={course.price} />
+                : null }
+                
             </div>
         </div>
     )

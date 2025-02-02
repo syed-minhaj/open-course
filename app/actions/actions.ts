@@ -2,7 +2,6 @@
 import { createClient } from "@supabase/supabase-js";
 import {prisma} from "../lib/prisma";
 import { validateUserAccess } from "../utils/validate_user";
-import { resizeFile }  from "../utils/imageResize";
 import { revalidatePath } from "next/cache";
 import { Course_created as Course, module_created as module } from "../types";
 
