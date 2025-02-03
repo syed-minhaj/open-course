@@ -38,6 +38,7 @@ model Course {
   modulesCount Int      @default(0)
   creator     User     @relation("CreatedCourses", fields: [creatorId], references: [id])
   creatorId   String
+  @@index([id , creatorId ])
   buyers      User[]   @relation("Purchases")
   inCart      User[]   @relation("CartItems")
   reviews     Review[]
@@ -54,6 +55,7 @@ model Modules {
   indexInCourse Int
   course    Course   @relation(fields: [courseId], references: [id])
   courseId         String
+  @@index([courseId , id])
 }
 
 model Review {
