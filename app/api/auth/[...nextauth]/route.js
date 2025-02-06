@@ -32,7 +32,7 @@ const handler = NextAuth({
         )()
       }
 
-      if (userF){
+      if (await userF()){
         return true
       }else{
         const createUser = await prisma.user.create({
