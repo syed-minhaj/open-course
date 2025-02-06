@@ -3,7 +3,6 @@ import GoogleProvider from "next-auth/providers/google";
 //import { PrismaAdapter } from '@next-auth/prisma-adapter';
 import {prisma} from '../../../lib/prisma';
 //import { PrismaClient } from "@prisma/client"
-import { unstable_cache as cache } from "next/cache";
 
 //const prisma = new PrismaClient()
 const handler = NextAuth({
@@ -17,22 +16,12 @@ const handler = NextAuth({
     
     async signIn(user) {
       // Handle sign in
-      const userF = async() => {
-        return await cache(
-          async () => { return await prisma.user.findFirst({
-            where: {
-              email : user.user.email ,
-            },
-            select:{
-              id:true
-            }
-          })},
-          [`user:${user.user.email}`],
-          {revalidate : 3600 }
-        )()
-      }
-
-      if (await userF()){
+      const userF = await prisma.user.findFirst({
+        where: {
+          email : user.user.email ,
+        }
+      })
+      if (userF){
         return true
       }else{
         const createUser = await prisma.user.create({

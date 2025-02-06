@@ -6,62 +6,46 @@ import { getServerSession } from "next-auth";
 import { redirect } from "next/navigation";
 import Hero from "./Hero";
 import ModulesSection from "./ModulesSection";
-import { unstable_cache as cache } from "next/cache";
 
-const getCourseById = async(id:string) : Promise<Course | null> => {
-    return await cache(
-        async () => {
-            return await prisma.course.findUnique({
-                where: {
-                    id: id
-                },
-                include :{
-                    modules: true
-                }
-            })
+const getCourseById = async(id:string) => {
+    const course : Omit<Course,"modules"> | null = await prisma.course.findUnique({
+        where: {
+            id: id
         },
-        [`courses-${id}`],
-        {revalidate: 3600 }
-    )();
+    })
+    if (!course){
+        return null;
+    }
+    const modules : module[] = await prisma.modules.findMany({
+        where: {
+            courseId: id
+        }
+    })
+    return {...course, modules}
 }
 
 const getUserByEmail = async(email :string | null | undefined) => {
     if (!email){return null}
-    return await cache(
-        async () => {
-            return await prisma.user.findUnique({
-                where: {
-                    email: email
-                }
-            })
-        },
-        [`user:${email}`],
-        {revalidate: 3600 }
-    )();
+    return await prisma.user.findUnique({
+        where: {
+            email: email
+        }
+    })
 }
 
 const isOwner = async (userId : string , courseId : string) => {
-    const getCourse = async() =>{
-        return await cache(
-            async () => {
-                return await prisma.course.findUnique({
-                    where: {
-                        id: courseId
-                    },
-                    select : {
-                        buyers: {
-                            select:{
-                                id: true
-                            }
-                        }
-                    }
-                })
-            },
-            [`course:${courseId}`],
-            {revalidate: 3600 }
-        )()
-    }
-    const course = await getCourse();
+    const course = await prisma.course.findUnique({
+        where: {
+            id: courseId
+        },
+        select : {
+            buyers: {
+                select:{
+                    id: true
+                }
+            }
+        }
+    })
     if (course && course.buyers){
         return course.buyers.some((buyer : any)=>{
             return buyer.id == userId
@@ -72,21 +56,18 @@ const isOwner = async (userId : string , courseId : string) => {
 
 
 export default async function CoursePage({params} : any) {
-    //console.profile("Course Page");
     if(!params){
         redirect('/');
 
     }
     const {id} = await params;
-    const [session, course] = await Promise.all([
-        getServerSession(),
-        getCourseById(id)
-    ]);
-
+    const session = await getServerSession();
     if(!session || !session.user || !session.user.email){
         redirect('/')
     }
+    const course : Course | null = await getCourseById(id);
     const user = await getUserByEmail(session.user.email);
+
     
 
     if(!course){
@@ -112,11 +93,10 @@ export default async function CoursePage({params} : any) {
         if(!user){return false}
         else if (Admin()){return true;}
         else {
-            const Owner = await isOwner(user.id , course.id);
-            return Owner;
+            return await isOwner(user.id, course.id)
         }
     }
-    //console.profileEnd("Course Page");
+
     return (
         <div className="flex flex-col items-center  min-h-screen  bg-primary relative ">
             <header className="w-full z-40 ">
