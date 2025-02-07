@@ -5,15 +5,10 @@ import Navbar from "@/app/components/Navbar";
 import { getServerSession, Session } from "next-auth";
 import { redirect } from "next/navigation";
 import { adminUser, nonAdminUser } from "@/app/types";
-import { connection } from "next/server";
 import Profile from "./components/Profile";
 import CourseSection from "./components/CourseSection";
-import { Course , module } from "@/app/types";
-interface PageProps {
-    params: {
-        id: string
-    }
-}
+import { Course  } from "@/app/types";
+
 
 const getUser = async(id: string) : Promise<adminUser | null> => {
     return await  prisma.user.findUnique({
@@ -49,7 +44,7 @@ const ViewerImage = async(email : string) => {
     return user.image;
 }
 
-export default async function UserPage({params} : PageProps) {
+export default async function UserPage({params} : any) {
     if(!params || !params.id){
         redirect('/')
     }
