@@ -1,6 +1,6 @@
 
 import { prisma } from "@/app/lib/prisma";
-import { Course, module } from "@/app/types";
+import { Course } from "@/app/types";
 import Navbar from "@/app/components/Navbar";
 import { getServerSession } from "next-auth";
 import { redirect } from "next/navigation";
@@ -8,20 +8,15 @@ import Hero from "./Hero";
 import ModulesSection from "./ModulesSection";
 
 const getCourseById = async(id:string) => {
-    const course : Omit<Course,"modules"> | null = await prisma.course.findUnique({
+    const course : Course | null = await prisma.course.findUnique({
         where: {
             id: id
         },
-    })
-    if (!course){
-        return null;
-    }
-    const modules : module[] = await prisma.modules.findMany({
-        where: {
-            courseId: id
+        include: {
+            modules: true
         }
     })
-    return {...course, modules}
+    return course;
 }
 
 const getUserByEmail = async(email :string | null | undefined) => {
@@ -39,9 +34,10 @@ const isOwner = async (userId : string , courseId : string) => {
             id: courseId
         },
         select : {
-            buyers: {
-                select:{
-                    id: true
+            id : true,
+            buyers : {
+                select : {
+                    id : true
                 }
             }
         }
@@ -68,9 +64,11 @@ export default async function CoursePage({params} : any) {
     const course : Course | null = await getCourseById(id);
     const user = await getUserByEmail(session.user.email);
 
-    
+    if(!user){
+        redirect('/')
+    }
 
-    if(!course){
+    if(!course ){
         return (
             <div className="flex flex-col items-center justify-center min-h-screen bg-primary relative ">
                 <h1 className="text-4xl font-bold m-2 ">
@@ -82,8 +80,7 @@ export default async function CoursePage({params} : any) {
     }
 
     const Admin = () => {
-        if(!user){return false}
-        else if(user.id == course.creatorId){
+        if(user.id == course.creatorId){
             return true;
         }else{
             return false;
@@ -100,7 +97,7 @@ export default async function CoursePage({params} : any) {
     return (
         <div className="flex flex-col items-center  min-h-screen  bg-primary relative ">
             <header className="w-full z-40 ">
-                <Navbar />
+                <Navbar  userImage={user.image}/>
             </header>
             <main className="w-full flex flex-col items-center absolute top-0  bg-primary ">
                 <Hero owned={await owned()} 
