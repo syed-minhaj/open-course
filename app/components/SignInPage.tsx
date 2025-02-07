@@ -16,17 +16,17 @@ const SignInPage = async({
   }
   else  {
     return (
-      <div className="h-screen bg-gray-50 dark:bg-zinc-800">
-     <div className=" pt-4 pl-4 font-serif italic text-yellow-950 dark:text-yellow-600 " >ChatApp</div>
-     <div className="pt-40   flex flex-row  justify-center items-start ">
-      <div className="flex flex-col items-center justify-around  ">
-        <div>
-         You are currently not login. Pless sign in first
+      <div className="h-screen bg-primary">
+        <div className=" pt-4 pl-4 font-serif italic text-accent " >Open-Course</div>
+        <div className="pt-40   flex flex-row  justify-center items-start ">
+          <div className="flex flex-col items-center justify-around  ">
+            <div>
+            You are currently not login. Pless sign in first
+            </div>
+            <SignInButt />
+          </div>
         </div>
-        <SignInButt />
       </div>
-     </div>
-    </div>
 
   );}
   

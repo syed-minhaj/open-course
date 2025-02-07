@@ -1,37 +1,21 @@
 "use client";
-import React, { useEffect, useRef, useState } from "react";
-import { signOut, useSession } from "next-auth/react";
+import React, { useEffect, useState } from "react";
+import { signOut } from "next-auth/react";
 import ModeIco from "./Mode";
-import Link from "next/link";
 import Image from 'next/image';
 
-interface userInfo {
-  id: number;
-  name: string | null;
-  image: string | null;
-  email: string | null;
-} 
 
 const UserIco = ({userImage}:{userImage : string}) => {
-    const { data: session } = useSession();
     const [mounted, setMounted] = useState(false);
     const [open , setOpen] = useState(false)
-    //const [image , setImage] = useState<string | undefined>(undefined);
-    const [v , setV] = useState<number>(Date.now());
     
     useEffect(() => {
         setMounted(true);
-        setV(Date.now());
     }, []);
-
-    
-
     if (!mounted) {
         return null;
     }
 
-    
-  
     return (
       
       <div className="flex flex-col gap-2 ml-auto z-10 ">

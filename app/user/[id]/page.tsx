@@ -1,6 +1,8 @@
+
+
 import { prisma } from "@/app/lib/prisma";
 import Navbar from "@/app/components/Navbar";
-import { getServerSession } from "next-auth";
+import { getServerSession, Session } from "next-auth";
 import { redirect } from "next/navigation";
 import { adminUser, nonAdminUser } from "@/app/types";
 import { connection } from "next/server";
@@ -13,7 +15,7 @@ interface PageProps {
     }
 }
 
-const getUser = async(id: string) => {
+const getUser = async(id: string) : Promise<adminUser | null> => {
     return await  prisma.user.findUnique({
         where: {
             id: id
@@ -21,38 +23,45 @@ const getUser = async(id: string) => {
     })
 }
 
-const getCourse = async(id: string) => {
-    let course : Omit<Course , "modules">[]  = await  prisma.course.findMany({
+const getCourse = async(id: string) : Promise<Course[]> => {
+    return await  prisma.course.findMany({
         where: {
             creatorId: id
+        },
+        include:{
+            modules: true
         }
     })
-    return  await Promise.all(
-        course.map(async (c : Omit<Course , "modules"> ) => {
-            const modules : module[] = await prisma.modules.findMany({
-                where: {
-                    courseId: c.id
-                }
-            })
-            c.modulesCount = modules.length;
-            return { modules : modules , ...c}
-        })
-    )
-    
 }
-export default async function UserPage({params} : any) {
-    await connection()
-    if(!params){
+
+const ViewerImage = async(email : string) => {
+    const user = await prisma.user.findUnique({
+        where: {
+            email: email
+        },
+        select: {
+            image: true
+        }
+    })
+    if(!user){
+        redirect('/')
+    }
+    return user.image;
+}
+
+export default async function UserPage({params} : PageProps) {
+    if(!params || !params.id){
         redirect('/')
     }
     const {id} = await params;
-    const session = await getServerSession();
-    if(!id){
-        redirect('/')
-    }
-    const user :adminUser | null = await getUser(id);
-    const course : Course[] = await getCourse(id);
-    if (!user ){
+    
+    const [session, user , course] : [Session | null , adminUser | null , Course[]] = await Promise.all([
+        getServerSession(),
+        getUser(id),
+        getCourse(id)
+    ]);
+
+    if (!user || !session || !session.user || !session.user.email){
         redirect('/')
     }
 
@@ -77,7 +86,7 @@ export default async function UserPage({params} : any) {
     return (
         <div className="flex flex-col items-center  min-h-screen bg-primary relative ">
             <header className="w-full">
-                <Navbar />
+                <Navbar  userImage={await ViewerImage(session.user.email)}/>
             </header>
             <main className="md:w-9/12 w-11/12 flex flex-col md:mt-14 mt-10 
                             space-y-5 divide-y divide-gray-300 dark:divide-gray-700  ">
