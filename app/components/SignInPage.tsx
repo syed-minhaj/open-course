@@ -17,7 +17,7 @@ const SignInPage = async({
   else  {
     return (
       <div className="h-screen bg-primary">
-        <div className=" pt-4 pl-4 font-serif italic text-accent " >Open-Course</div>
+        <div className=" pt-4 pl-4 font-bold text-tertiary " >Open-Course</div>
         <div className="pt-40   flex flex-row  justify-center items-start ">
           <div className="flex flex-col items-center justify-around  ">
             <div>
