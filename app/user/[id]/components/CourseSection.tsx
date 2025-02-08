@@ -1,32 +1,27 @@
-"use client"
-import { adminUser, nonAdminUser , Course} from "@/app/types";
-import { useState , Suspense } from "react";
-import CreationWindow from "./courseSection/CreationWindow";
-import {PackagePlus} from "lucide-react";
-import CoursePreview from "@/app/components/CoursePreview";
 
-const CourseSection = ({user, admin , course} : {user: adminUser | nonAdminUser, admin: boolean, course: Course[]}) => {
+import { adminUser, nonAdminUser , Course} from "@/app/types";
+import CoursePreview from "@/app/components/CoursePreview";
+import Create from "./courseSection/Create";
+import { prisma } from "@/app/lib/prisma";
+
+const getCourse = async(id: string) : Promise<Course[]> => {
+    return await  prisma.course.findMany({
+            where: {
+                creatorId: id
+            },
+            include:{
+                modules: true
+            }
+        })
+}
+
+const CourseSection = async({user, admin } : {user: adminUser | nonAdminUser, admin: boolean}) => {
     
-    const [windowOpen , setWindowOpen] = useState(false);
-    
+    const course = await getCourse(user.id);
     return(
         <div className="w-full min-h-36 flex flex-col gap-2 ">
             {admin ? 
-            <>
-            <div className="flex flex-col  w-full ">
-                <button onClick={()=>{setWindowOpen(true)}}
-                 className="ml-auto p-1 px-2 rounded bg-secondary text-prePrimary flex flex-row ">
-                    <PackagePlus className="w-6 h-6 text-prePrimary px-1" /> Create
-                </button>
-            </div>
-
-            {windowOpen ? 
-                <Suspense fallback={<div className="w-screen h-screen fixed top-0 left-0 z-20  
-                    bg-black bg-opacity-25 backdrop-blur-sm flex justify-center items-center"></div>}>
-                    <CreationWindow user={user} admin={admin} setWindowOpen={setWindowOpen} /> 
-                </Suspense>
-            : null}
-            </>
+                <Create user={user} admin={admin} />
             : null
             }
             <div className="w-full min-h-48 grid grid-cols-1 md:grid-cols-3 xl:grid-cols-4 gap-2  ">

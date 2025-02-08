@@ -6,9 +6,13 @@ import { getServerSession, Session } from "next-auth";
 import { redirect } from "next/navigation";
 import { adminUser, nonAdminUser } from "@/app/types";
 import Profile from "./components/Profile";
-import CourseSection from "./components/CourseSection";
 import { Course  } from "@/app/types";
+import dynamic from "next/dynamic";
 
+const CourseSection = dynamic(() => import("./components/CourseSection"), {
+    loading: () => <div className="h-32 flex flex-row-reverse md:flex-col gap-2 w-full 
+        bg-prePrimary rounded-lg p-2 shadow-sm shadow-slate-700 dark:shadow-black drop-shadow-sm "></div>,
+});
 
 const getUser = async(id: string) : Promise<adminUser | null> => {
     return await  prisma.user.findUnique({
@@ -18,16 +22,7 @@ const getUser = async(id: string) : Promise<adminUser | null> => {
     })
 }
 
-const getCourse = async(id: string) : Promise<Course[]> => {
-    return await  prisma.course.findMany({
-        where: {
-            creatorId: id
-        },
-        include:{
-            modules: true
-        }
-    })
-}
+
 
 const ViewerImage = async(email : string) => {
     const user = await prisma.user.findUnique({
@@ -44,16 +39,18 @@ const ViewerImage = async(email : string) => {
     return user.image;
 }
 
+
+
 export default async function UserPage({params} : any) {
-    if(!params || !params.id){
+    
+    const {id} = await params;
+    if (!id){
         redirect('/')
     }
-    const {id} = await params;
     
-    const [session, user , course] : [Session | null , adminUser | null , Course[]] = await Promise.all([
+    const [session, user] : [Session | null , adminUser | null ] = await Promise.all([
         getServerSession(),
-        getUser(id),
-        getCourse(id)
+        getUser(id)
     ]);
 
     if (!user || !session || !session.user || !session.user.email){
@@ -87,7 +84,7 @@ export default async function UserPage({params} : any) {
                             space-y-5 divide-y divide-gray-300 dark:divide-gray-700  ">
                 <Profile user={user} admin={isAdmin()} id={id} />
                 <div className="py-5">
-                    <CourseSection user={viewer} admin={isAdmin()} course={course} />
+                    <CourseSection user={viewer} admin={isAdmin()} />
                 </div>
             </main>
         </div>
