@@ -7,6 +7,18 @@ import { redirect } from "next/navigation";
 import Hero from "./Hero";
 import ModulesSection from "./ModulesSection";
 
+export async function generateStaticParams() {
+    const courses = await prisma.course.findMany({
+        select: { id: true }
+    });
+
+    return courses.map((course) => ({
+        id: course.id,
+    }));
+}
+
+export const revalidate = 3600;
+
 const getCourseById = async(id:string) => {
     const course : Course | null = await prisma.course.findUnique({
         where: {
@@ -51,11 +63,8 @@ const isOwner = async (userId : string , courseId : string) => {
 }
 
 
-export default async function CoursePage({params} : any) {
-    if(!params){
-        redirect('/');
-
-    }
+export default async function CoursePage({params} : {params : Promise<{id : string}>}) {
+   
     const {id} = await params;
     const session = await getServerSession();
     if(!session || !session.user || !session.user.email){
