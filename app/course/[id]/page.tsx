@@ -1,23 +1,27 @@
 
 import { prisma } from "@/app/lib/prisma";
-import { Course } from "@/app/types";
+import { Course as CourseType , adminUser } from "@/app/types";
 import Navbar from "@/app/components/Navbar";
 import { getServerSession } from "next-auth";
 import { redirect } from "next/navigation";
 import Hero from "./Hero";
 import ModulesSection from "./ModulesSection";
 
-export async function generateStaticParams() {
-    const courses = await prisma.course.findMany({
-        select: { id: true }
-    });
-
-    return courses.map((course) => ({
-        id: course.id,
-    }));
+type Course = CourseType & {
+    buyers : {id : string}[]
 }
 
-export const revalidate = 3600;
+// export async function generateStaticParams() {
+//     const courses = await prisma.course.findMany({
+//         select: { id: true }
+//     });
+
+//     return courses.map((course) => ({
+//         id: course.id,
+//     }));
+// }
+
+// export const revalidate = 3600;
 
 const getCourseById = async(id:string) => {
     const course : Course | null = await prisma.course.findUnique({
@@ -25,7 +29,12 @@ const getCourseById = async(id:string) => {
             id: id
         },
         include: {
-            modules: true
+            modules: true ,
+            buyers: {
+                select: {
+                    id: true
+                }
+            }
         }
     })
     return course;
@@ -33,45 +42,41 @@ const getCourseById = async(id:string) => {
 
 const getUserByEmail = async(email :string | null | undefined) => {
     if (!email){return null}
-    return await prisma.user.findUnique({
+    const user = await prisma.user.findUnique({
         where: {
             email: email
         }
     })
+    return user;
 }
 
-const isOwner = async (userId : string , courseId : string) => {
-    const course = await prisma.course.findUnique({
-        where: {
-            id: courseId
-        },
-        select : {
-            id : true,
-            buyers : {
-                select : {
-                    id : true
-                }
-            }
-        }
-    })
-    if (course && course.buyers){
-        return course.buyers.some((buyer : any)=>{
+const isOwner = async (userId : string , buyers : {id : string}[] ) => {
+    
+        return buyers.some((buyer : {id: string })=>{
             return buyer.id == userId
         })
-    }
-    return false;
+    
 }
 
 
-export default async function CoursePage({params} : {params : Promise<{id : string}>}) {
+export default async function CoursePage({params} : {params : any}) {
    
+    
     const {id} = await params;
+    if (!id){
+        redirect('/')
+    }
     const session = await getServerSession();
     if(!session || !session.user || !session.user.email){
         redirect('/')
     }
-    const course : Course | null = await getCourseById(id);
-    const user = await getUserByEmail(session.user.email);
+    // const course : Course | null = await getCourseById(id);
+    // console.log(55555)
+    // const user = await getUserByEmail(session.user.email);
+    const [course , user] : [Course | null , adminUser | null] = await Promise.all([
+        getCourseById(id),
+        getUserByEmail(session.user.email)
+    ])
 
     if(!user){
         redirect('/')
@@ -99,7 +104,7 @@ export default async function CoursePage({params} : {params : Promise<{id : stri
         if(!user){return false}
         else if (Admin()){return true;}
         else {
-            return await isOwner(user.id, course.id)
+            return await isOwner(user.id, course.buyers)
         }
     }
 
