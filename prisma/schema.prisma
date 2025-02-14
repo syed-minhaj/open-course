@@ -44,6 +44,7 @@ model Course {
   reviewCount Int      @default(0)
   userCount   Int      @default(0)  // New field to track number of users
   avgRating   Float    @default(0)  // New field to track average rating
+  @@index([creatorId,id])
 }
 
 model Modules {
@@ -54,6 +55,7 @@ model Modules {
   indexInCourse Int
   course    Course   @relation(fields: [courseId], references: [id])
   courseId         String
+  @@index([courseId,id])
 }
 
 model Review {

@@ -1,5 +1,4 @@
 
-import Image from "next/image";
 import Link from "next/link";
 import { getServerSession } from "next-auth";
 import { prisma } from "@/app/lib/prisma";
@@ -44,7 +43,7 @@ export default async function Home() {
         <div className="bg-accent h-10 w-10"></div>
       </div>
       <Mode/>
-      <Link href={`/user/1511a3e7-4fa4-473a-a10c-25188bfd714e`} className="p-1 bg-accent rounded text-[--color-primary]"> Minhaj user page </Link>
+      <Link href={`/user/71253ed7-e0b2-43b2-9bf6-fd4c374c35fe`} className="p-1 bg-accent rounded text-[--color-primary]"> Minhaj user page </Link>
       <Link href={`/user/${user.id}`} className="p-1 bg-prePrimary rounded" > Your user page </Link>
       <div className="h-36 w-20 bg-prePrimary shadow-lg"></div>
     </div>
