@@ -96,7 +96,7 @@ export default async function CoursePage({params} : {params : any}) {
     return (
         <div className="flex flex-col items-center  min-h-screen  bg-primary relative ">
             <header className="w-full z-40 ">
-                <Navbar  userImage={user.image}/>
+                <Navbar  userImage={user.image} userID={user.id}/>
             </header>
             <main className="w-full flex flex-col items-center absolute top-0  bg-primary ">
                 <Hero owned={await owned()} 

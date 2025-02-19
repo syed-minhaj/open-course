@@ -72,5 +72,17 @@ export async function BuyCourse(courseID : string){
             }
         }
     })
+    await prisma.course.update({
+        where: {
+            id: courseID
+        },
+        data: {
+            inCart: {
+                disconnect: {
+                    id: user.id
+                }
+            }
+        }
+    })
     return {err: null}
 }

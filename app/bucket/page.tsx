@@ -1,0 +1,39 @@
+import { prisma } from "@/app/lib/prisma";
+import { getServerSession } from "next-auth";
+import { redirect } from "next/navigation";
+import Navbar from "../components/Navbar";
+import CourseSection from "./components/CourseSection";
+
+const getUserByEmail = async (email:string) => {
+  return await  prisma.user.findUnique({
+    where: {
+      email: email
+    },
+    select: {
+      id: true,
+      image: true,
+    }
+  })
+}
+
+export default async function Bucket() {  
+    const session = await getServerSession();
+    if(!session || !session.user || !session.user.email){
+        redirect('/')
+    }
+    const user = await getUserByEmail(session.user.email);
+    if(!user){
+        redirect('/')
+    }
+    return (
+        <div className="flex flex-col min-h-screen bg-primary  ">
+            <Navbar userImage={user.image} userID={user.id}/>
+            <main className="md:w-9/12 w-11/12 mx-auto my-2 gap-2 ">
+                <h1 className="text-2xl font-bold text-primary mt-4 ">
+                    Bucket items
+                </h1>
+                <CourseSection userID={user.id} />
+            </main>
+        </div>
+    )
+}

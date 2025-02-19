@@ -78,7 +78,7 @@ export default async function UserPage({params} : any) {
     return (
         <div className="flex flex-col items-center  min-h-screen bg-primary relative ">
             <header className="w-full">
-                <Navbar  userImage={await ViewerImage(session.user.email)}/>
+                <Navbar  userImage={await ViewerImage(session.user.email)} userID={id}/>
             </header>
             <main className="md:w-9/12 w-11/12 flex flex-col md:mt-14 mt-10 
                             space-y-5 divide-y divide-gray-300 dark:divide-gray-700  ">
