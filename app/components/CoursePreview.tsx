@@ -11,7 +11,7 @@ const CoursePreviw = ({course, index, admin } : {course: Course, index: number, 
             <div className="w-24 flex flex-col justify-between  md:w-full   ">
                 <img src={course.image} alt={course.name} className=" h-24 md:w-full w-24 object-cover rounded-lg"/>
                 <div className="flex flex-row justify-between md:hidden">
-                    <Link href={`/course/${course.id}`} className="md:ml-auto text-accent hover:opacity-65">
+                    <Link href={`/course/${course.id}`} className="md:ml-auto text-accent hover:opacity-65 h-fit my-auto ">
                         details
                     </Link>
                     {admin ?
@@ -39,7 +39,7 @@ const CoursePreviw = ({course, index, admin } : {course: Course, index: number, 
                 <div className="p-1 text-accent border border-accent rounded-md flex flex-row gap-1 h-[22] relative text-sm/4 ">
                     <Package size={14} className="w-[14] h-[14]  "/> {course.modules.length}
                 </div>
-                <Link href={`/course/${course.id}`} className="md:ml-auto text-accent hover:opacity-65">
+                <Link href={`/course/${course.id}`} className="md:ml-auto text-accent hover:opacity-65 h-fit my-auto ">
                     details
                 </Link>
                 {admin ?
