@@ -60,29 +60,39 @@ export async function BuyCourse(courseID : string){
     if(!user){
         return {err:"User not found"};
     }
-    await prisma.course.update({
-        where: {
-            id: courseID
-        },
-        data: {
-            buyers: {
-                connect: {
-                    id: user.id
+    try{
+        await prisma.course.update({
+            where: {
+                id: courseID
+            },
+            data: {
+                buyers: {
+                    connect: {
+                        id: user.id
+                    }
                 }
             }
-        }
-    })
-    await prisma.course.update({
-        where: {
-            id: courseID
-        },
-        data: {
-            inCart: {
-                disconnect: {
-                    id: user.id
+        })
+    }catch(e : any){
+        return {err: `${e.message} , \n
+                Error while buying course , \n
+                Please try again `}
+    }
+    try{
+        await prisma.course.update({
+            where: {
+                id: courseID
+            },
+            data: {
+                inCart: {
+                    disconnect: {
+                        id: user.id
+                    }
                 }
             }
-        }
-    })
+        })
+    }catch(e : any){
+        return {err: `${e.message} `}
+    }
     return {err: null}
 }

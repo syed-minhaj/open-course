@@ -29,10 +29,10 @@ export default async function Home({searchParams}:any) {
   //const c = performance.now()
   //console.log(b-a , c-b )
   // start timer
-  const start = performance.now() ;
+  //const start = performance.now() ;
   //const total = await getTotal(query);
-  const end = performance.now();
-  console.log(6 , end-start);
+  //const end = performance.now();
+  //console.log(6 , end-start);
   if(!session || !session.user || !session.user.email){
     return (
       <div className="flex flex-col items-center justify-center">

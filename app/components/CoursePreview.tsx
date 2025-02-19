@@ -1,7 +1,7 @@
 import { Course } from "@/app/types"
 import Link from "next/link";
 import { Package } from "lucide-react";
-
+import BuyCourse from "./Button/BuyCourse";
 
 const CoursePreviw = ({course, index, admin } : {course: Course, index: number, admin: boolean }) => {
     return(
@@ -19,9 +19,7 @@ const CoursePreviw = ({course, index, admin } : {course: Course, index: number, 
                             {course.price == 0 ? "Free" : "$"+course.price}
                         </p>
                     :
-                        <button  className="bg-accent p-1 rounded-md text-[--color-primary] ">
-                            {course.price == 0 ? "Free" : "$"+course.price}
-                        </button>
+                        <BuyCourse courseID={course.id} coursePrice={course.price} />
                     }
                 </div>
             </div>
@@ -47,9 +45,7 @@ const CoursePreviw = ({course, index, admin } : {course: Course, index: number, 
                         {course.price == 0 ? "Free" : "$"+course.price}
                     </p>
                 :
-                    <button  className="bg-accent p-1 rounded-md text-[--color-primary] ">
-                        {course.price == 0 ? "Free" : "$"+course.price}
-                    </button>
+                    <BuyCourse courseID={course.id} coursePrice={course.price} />
                 }
             </div>
         </div>
