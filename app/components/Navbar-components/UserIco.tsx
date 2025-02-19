@@ -24,7 +24,7 @@ const UserIco = ({ userImage }: { userImage: string }) => {
           alt="no img" height={32} width={32} />
       </button>
       {open && (
-        <div className="gap-2 w-fit flex flex-col mt-2 absolute right-4 top-[54] ">
+        <div className="gap-2 w-fit flex flex-col mt-2 absolute right-4 top-[54px] ">
           <button className={`px-2 py-1 bg-slate-500  rounded text-gray-50 `}>
             <ModeIco />
           </button>
