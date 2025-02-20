@@ -3,7 +3,7 @@ import Link from "next/link";
 import { Package } from "lucide-react";
 import BuyCourse from "./Button/BuyCourse";
 
-const CoursePreviw = ({course, index, admin } : {course: Course, index: number, admin: boolean }) => {
+const CoursePreviw = ({course, owner } : {course: Course, index: number, owner: boolean }) => {
     return(
         <div  className="max-h-fit flex flex-row-reverse md:flex-col gap-2 
         bg-prePrimary rounded-lg p-2 shadow-sm shadow-slate-700 dark:shadow-black drop-shadow-sm">
@@ -14,7 +14,7 @@ const CoursePreviw = ({course, index, admin } : {course: Course, index: number, 
                     <Link href={`/course/${course.id}`} className="md:ml-auto text-accent hover:opacity-65 h-fit my-auto ">
                         details
                     </Link>
-                    {admin ?
+                    {owner ?
                         <p  className="md:ml-auto text-accent ">
                             {course.price == 0 ? "Free" : "$"+course.price}
                         </p>
@@ -40,7 +40,7 @@ const CoursePreviw = ({course, index, admin } : {course: Course, index: number, 
                 <Link href={`/course/${course.id}`} className="md:ml-auto text-accent hover:opacity-65 h-fit my-auto ">
                     details
                 </Link>
-                {admin ?
+                {owner ?
                     <p  className=" text-accent ">
                         {course.price == 0 ? "Free" : "$"+course.price}
                     </p>

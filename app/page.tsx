@@ -14,7 +14,11 @@ const getUserByEmail = async (email:string) => {
   return await  prisma.user.findUnique({
     where: {
       email: email
-    }
+    },
+    select: {
+      id: true,
+      image: true
+    },
   })
 }
 
@@ -49,7 +53,7 @@ export default async function Home({searchParams}:any) {
         {query ? 
           <RemoveSearch />
         : null}
-        <CourseSection  page={page} query={query} />
+        <CourseSection  page={page} query={query} userID={user.id}/>
       </main>
     </div>
   );

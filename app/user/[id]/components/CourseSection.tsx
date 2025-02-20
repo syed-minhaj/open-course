@@ -15,6 +15,21 @@ const getCourse = async(id: string) : Promise<Course[]> => {
         })
 }
 
+const getCourseOwner = async(id : string) => {
+    return await prisma.course.findUnique({
+        where: {
+            id: id
+        },
+        select: {
+            buyers:{
+                select:{
+                    id: true,
+                }
+            }
+        }
+    })
+}
+
 const CourseSection = async({user, admin } : {user: adminUser | nonAdminUser, admin: boolean}) => {
     
     const course = await getCourse(user.id);
@@ -25,10 +40,20 @@ const CourseSection = async({user, admin } : {user: adminUser | nonAdminUser, ad
             : null
             }
             <div className="w-full min-h-48 grid grid-cols-1 md:grid-cols-3 xl:grid-cols-4 gap-2  ">
-                {course.map((course , index  )=>{
+                {course.map(async (course , index  )=>{
+                    const courseOwner = await getCourseOwner(course.id);
+                    function isOwner(){
+                      if(admin){
+                        return true;
+                      }else if(courseOwner && courseOwner.buyers.some(buyer => buyer.id == user.id)){
+                        return true;
+                      }else{
+                        return false;
+                      }
+                    }
                     return(
                         <div key={course.id} className="">
-                            <CoursePreview course={course} index={index} admin={admin}  />
+                            <CoursePreview course={course} index={index} owner={isOwner()}  />
                         </div>
                     )
                 })}

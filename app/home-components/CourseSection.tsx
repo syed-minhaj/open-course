@@ -2,7 +2,6 @@ import CoursePreview from "../components/CoursePreview"
 import { prisma } from "../lib/prisma"
 import { Course } from "../types"
 import PageChanger from "./PageChnager"
-import RemoveSearch from "./RemoveSearch"
 
 const getCourses = async(page : string | undefined , query : string | undefined) => {
   const pageNumber = (page ? Number(page) : 1) || 3;
@@ -61,7 +60,22 @@ const getTotal = async(query : string | undefined) => {
   return total;
 }
 
-const CourseSection = async({page , query}:{ page:string | undefined , query:string | undefined}) => {
+const getCourseOwner = async(id : string) => {
+    return await prisma.course.findUnique({
+        where: {
+            id: id
+        },
+        select: {
+            buyers:{
+                select:{
+                    id: true,
+                }
+            }
+        }
+    })
+}
+
+const CourseSection = async({page , query , userID}:{ page:string | undefined , query:string | undefined , userID:string }) => {
 
     const course = await getCourses(page , query);
     const total = await getTotal(query);
@@ -73,10 +87,20 @@ const CourseSection = async({page , query}:{ page:string | undefined , query:str
                         dark:shadow-black drop-shadow-sm ">
                     </div>
                 : null }
-                {course.map((course : Course , index : number)=>{
+                {course.map(async (course : Course , index : number)=>{
+                    const courseOwner = await getCourseOwner(course.id);
+                    function isOwner(){
+                      if(userID == course.creatorId){
+                        return true;
+                      }else if(courseOwner && courseOwner.buyers.some(buyer => buyer.id == userID)){
+                        return true;
+                      }else{
+                        return false;
+                      }
+                    }
                     return(
                         <div key={course.id} className="">
-                            <CoursePreview course={course} index={index} admin={false}  />
+                            <CoursePreview course={course} index={index} owner={isOwner()}  />
                         </div>
                     )
                 })}

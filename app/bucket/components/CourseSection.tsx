@@ -17,19 +17,44 @@ const getCourses = async(userID : string) => {
     })
 }
 
+const getCourseOwner = async(id : string) => {
+    return await prisma.course.findUnique({
+        where: {
+            id: id
+        },
+        select: {
+            buyers:{
+                select:{
+                    id: true,
+                }
+            }
+        }
+    })
+}
+
 const CourseSection = async({userID}:{userID:string}) => {
     const user = await getCourses(userID);
     if(!user){
         return <div>dfk</div>;
     }
-    //const cartItems : Course[] = user.cartItems;
+    
     return (
         <div className=" grid grid-cols-1 md:grid-cols-3 xl:grid-cols-4 gap-2 mt-4 ">
             
-            {user.cartItems.map((cartItem : Course , index : number)=>{
+            {user.cartItems.map(async (cartItem : Course , index : number)=>{
+                const courseOwner = await getCourseOwner(cartItem.id);
+                function isOwner(){
+                  if(userID == cartItem.creatorId){
+                    return true;
+                  }else if(courseOwner && courseOwner.buyers.some(buyer => buyer.id == userID)){
+                    return true;
+                  }else{
+                    return false;
+                  }
+                }
                 return(
                     <div key={cartItem.id} className="">
-                        <CoursePreview course={cartItem} index={index} admin={false}  />
+                        <CoursePreview course={cartItem} index={index} owner={isOwner()}  />
                     </div>
                 )
             })}
