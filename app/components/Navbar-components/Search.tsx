@@ -1,21 +1,23 @@
 "use client";
 import { useSearchParams , usePathname , useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
+
 const Search = () => {
     const searchParams = useSearchParams();
     const path = usePathname();
-    const {replace} = useRouter();
     const query = searchParams.get("query");
     const [search , setSearch] = useState(query ? query : "");
     useEffect(() => {
         setSearch(query ? query : "");
     }, [query])
+
     const handleSearch = () => {
         const params = new URLSearchParams();
         if(search == ""){params.delete("query");}
         else{params.set("query" , search);}
-        replace(`${path}?${params.toString()}`)
+        location.href = `${path}?${params.toString()}`;
     }
+
     return(
         
         <input onKeyDown={(e) => {if(e.key ==="Enter"){handleSearch()}}} 

@@ -2,7 +2,6 @@
 import { getServerSession } from "next-auth";
 import { prisma } from "@/app/lib/prisma";
 import Navbar from "./components/Navbar";
-import { Course } from "@/app/types";
 import RemoveSearch from "./home-components/RemoveSearch";
 import dynamic from "next/dynamic";
 
@@ -22,17 +21,7 @@ const getUserByEmail = async (email:string) => {
 export default async function Home({searchParams}:any) {
   const {page} = await searchParams;
   const {query} = await searchParams;
-  //const a = performance.now()
-  //const course = await getCourses(page , query);
-  //const b = performance.now()
   const session = await getServerSession();
-  //const c = performance.now()
-  //console.log(b-a , c-b )
-  // start timer
-  //const start = performance.now() ;
-  //const total = await getTotal(query);
-  //const end = performance.now();
-  //console.log(6 , end-start);
   if(!session || !session.user || !session.user.email){
     return (
       <div className="flex flex-col items-center justify-center">

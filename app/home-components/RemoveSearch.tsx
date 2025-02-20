@@ -3,12 +3,13 @@ import { useSearchParams } from "next/navigation";
 import { useRouter } from "next/navigation";
 
 const RemoveSearch = () => {
-    const {replace} = useRouter();
     const params = useSearchParams();
     const query = params.get("query");
+
     function RemoveParams(){
-        replace(`/ `)
+        location.href = `${location.pathname}`;
     }
+    
     return(
         <div className="bg-prePrimary rounded-lg p-2 w-fit shadow-sm shadow-slate-700 
             dark:shadow-black drop-shadow-sm flex flex-row gap-1 ">
