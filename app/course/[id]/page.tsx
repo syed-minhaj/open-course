@@ -1,6 +1,6 @@
 
 import { prisma } from "@/app/lib/prisma";
-import { Course as CourseType , adminUser } from "@/app/types";
+import { Course as CourseType  } from "@/app/types";
 import Navbar from "@/app/components/Navbar";
 import { getServerSession } from "next-auth";
 import { redirect } from "next/navigation";
@@ -9,9 +9,8 @@ import ModulesSection from "./ModulesSection";
 
 type Course = CourseType & {
     buyers : {id : string}[]
+    inCart : {id : string}[]
 }
-
-
 
 const getCourseById = async(id:string) => {
     const course : Course | null = await prisma.course.findUnique({
@@ -22,6 +21,11 @@ const getCourseById = async(id:string) => {
             modules: true ,
             buyers: {
                 select: {
+                    id: true
+                }
+            },
+            inCart:{
+                select:{
                     id: true
                 }
             }
@@ -35,14 +39,18 @@ const getUserByEmail = async(email :string | null | undefined) => {
     const user = await prisma.user.findUnique({
         where: {
             email: email
+        },
+        select:{
+            id : true,
+            image : true
         }
     })
     return user;
 }
 
-const isOwner = async (userId : string , buyers : {id : string}[] ) => {
-    return buyers.some((buyer : {id: string })=>{
-        return buyer.id == userId
+const userInList = async (userId : string , users : {id : string}[] ) => {
+    return users.some((user : {id: string })=>{
+        return user.id == userId
     })
 }
 
@@ -58,7 +66,7 @@ export default async function CoursePage({params} : {params : any}) {
         redirect('/')
     }
     
-    const [course , user] : [Course | null , adminUser | null] = await Promise.all([
+    const [course , user] : [Course | null , {id: string , image : string} | null] = await Promise.all([
         getCourseById(id),
         getUserByEmail(session.user.email)
     ])
@@ -89,9 +97,10 @@ export default async function CoursePage({params} : {params : any}) {
         if(!user){return false}
         else if (Admin()){return true;}
         else {
-            return await isOwner(user.id, course.buyers)
+            return await userInList(user.id, course.buyers)
         }
     }
+    const inCart = await userInList(user.id, course.inCart);
 
     return (
         <div className="flex flex-col items-center  min-h-screen  bg-primary relative ">
@@ -99,7 +108,7 @@ export default async function CoursePage({params} : {params : any}) {
                 <Navbar  userImage={user.image} userID={user.id}/>
             </header>
             <main className="w-full flex flex-col items-center absolute top-0  bg-primary ">
-                <Hero owned={await owned()} 
+                <Hero owned={await owned()} inCart={inCart} 
                 course={{id : course.id , name : course.name , description : course.description , price : course.price , image: course.image}} />
                 <ModulesSection modules={course.modules} owned={await owned()} />
             </main>

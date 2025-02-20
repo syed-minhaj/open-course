@@ -1,13 +1,13 @@
 "use client"
 import { ShoppingCart } from "lucide-react";
 import { BuyCourse } from "@/app/actions/course";
-import { AddToCart as AddToCartAction } from "@/app/actions/course";
+import { AddToCart , RemoveFromCart } from "@/app/actions/course";
 import { useState } from "react";
 import { revalidatePath_fromClient } from "@/app/actions/actions";
 
-const OrderSection = ({courseID , coursePrice} : {courseID : string , coursePrice : number}) => {
+const OrderSection = ({courseID , coursePrice , inCart} : {courseID : string , coursePrice : number , inCart : boolean}) => {
 
-    const [addingToCart , setAddingToCart] = useState(false);
+    const [disableCart , setDisableCart] = useState(false);
     const [buying , setBuying] = useState(false);
 
     function Buy(){
@@ -26,12 +26,19 @@ const OrderSection = ({courseID , coursePrice} : {courseID : string , coursePric
             })
     }
 
-    function AddToCart(){
-        setAddingToCart(true);
-        AddToCartAction(courseID).then(({err})=>{
-            setAddingToCart(false);
-            if(err){alert(err)}
-        })
+    function OnCartClick(){
+        setDisableCart(true);
+        if(inCart){
+            RemoveFromCart(courseID).then(({err})=>{
+                setDisableCart(false);
+                if(err){alert(err)}
+            })
+        }else{
+            AddToCart(courseID).then(({err})=>{
+                setDisableCart(false);
+                if(err){alert(err)}
+            })
+        }
     }
 
     return(
@@ -40,10 +47,14 @@ const OrderSection = ({courseID , coursePrice} : {courseID : string , coursePric
                 className="p-2 rounded bg-accent text-[--color-primary] min-w-[91] disabled:opacity-45 "> 
                     { coursePrice == 0 ? 'Free' : '$'+coursePrice }
                 </button>
-                <button onClick={AddToCart} disabled={addingToCart}
+                <button onClick={OnCartClick} disabled={disableCart}
                 className="p-2 rounded border border-accent flex flex-row justify-center min-w-[91] disabled:opacity-45 "> 
                     <ShoppingCart />
-                    Cart 
+                    {inCart ?
+                        " Remove"
+                    :
+                        " Cart" 
+                    }
                 </button>
             </div>
         

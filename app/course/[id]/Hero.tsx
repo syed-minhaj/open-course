@@ -12,7 +12,7 @@ type course = {
     image: string
 }
 
-const Hero = ({owned ,  course} : {owned : boolean , course : course}) => {
+const Hero = ({owned ,  course , inCart} : {owned : boolean , course : course , inCart : boolean}) => {
 
     function Buy(){
         if(!owned){
@@ -35,7 +35,7 @@ const Hero = ({owned ,  course} : {owned : boolean , course : course}) => {
                 </h1>
                 <ExpandableDescription description={course.description} />
                 {!owned ? 
-                    <OrderSection courseID={course.id} coursePrice={course.price} />
+                    <OrderSection courseID={course.id} coursePrice={course.price} inCart={inCart} />
                 : null }
                 
             </div>
