@@ -6,7 +6,7 @@ import RemoveSearch from "./home-components/RemoveSearch";
 import dynamic from "next/dynamic";
 
 const CourseSection = dynamic (() => import("./home-components/CourseSection") , {
-        loading: () => <div className="h-32 flex flex-row-reverse md:flex-col gap-2 w-full mt-4 
+        loading: () => <div className="h-[202px] animate-pulse flex flex-row-reverse md:flex-col gap-2 w-full mt-4 
         bg-prePrimary rounded-lg p-2 shadow-sm shadow-slate-700 dark:shadow-black drop-shadow-sm "></div>,
 })
 
