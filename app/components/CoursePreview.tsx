@@ -15,7 +15,7 @@ const CoursePreviw = ({course, owner } : {course: Course, index: number, owner: 
                         details
                     </Link>
                     {owner ?
-                        <p  className="md:ml-auto text-accent ">
+                        <p  className="md:ml-auto text-accent my-auto h-fit ">
                             {course.price == 0 ? "Free" : "$"+course.price}
                         </p>
                     :
@@ -41,7 +41,7 @@ const CoursePreviw = ({course, owner } : {course: Course, index: number, owner: 
                     details
                 </Link>
                 {owner ?
-                    <p  className=" text-accent ">
+                    <p  className=" text-accent ml-auto h-fit ">
                         {course.price == 0 ? "Free" : "$"+course.price}
                     </p>
                 :
