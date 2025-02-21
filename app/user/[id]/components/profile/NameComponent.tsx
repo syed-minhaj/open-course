@@ -12,8 +12,8 @@ const NameComponent= ( {user , admin} : {user: adminUser | nonAdminUser, admin: 
     return (
         <>
         {isEditing ? 
-            <div className="relative -left-1 -top-1 flex flex-row font-normal text-2xl gap-2  ">
-                <input type="text" className=" text-primary bg-black px-1 rounded 
+            <div className="relative -left-1 -top-1 flex flex-row flex-wrap font-normal text-2xl gap-2  ">
+                <input type="text" className=" text-primary bg-black px-1 rounded max-w-[100dvw]  
                 bg-opacity-15" value={name} 
                 onChange={(e)=>{setName(e.target.value);}} />
                 <button className=" text-prePrimary  font-normal text-2xl flex flex-row 
