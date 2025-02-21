@@ -41,7 +41,7 @@ const CoursePreviw = ({course, owner } : {course: Course, index: number, owner: 
                     details
                 </Link>
                 {owner ?
-                    <p  className=" text-accent ml-auto h-fit ">
+                    <p  className=" text-accent my-auto h-fit ">
                         {course.price == 0 ? "Free" : "$"+course.price}
                     </p>
                 :
