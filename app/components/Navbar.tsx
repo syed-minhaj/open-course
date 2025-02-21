@@ -5,7 +5,7 @@ import {Store , ShoppingCart} from "lucide-react";
 import Search from "./Navbar-components/Search";
 import Link from "next/link";
 
-const Navbar = async({userImage , userID} : {userImage : string , userID : string}) => {
+const Navbar = async({userImage , userID , search } : {userImage : string , userID : string , search? : true }) => {
   
   return (
       <>
@@ -14,9 +14,11 @@ const Navbar = async({userImage , userID} : {userImage : string , userID : strin
             <Link href={'/'}>OpenCourse</Link>
         </h1>
         <div className="w-1/2 ml-auto flex flex-row gap-2 ">
-            <div className="hidden md:flex flex-row flex-1 ">
-              <Search />
-            </div>
+            {search ?
+              <div className="hidden md:flex flex-row flex-1 ">
+                <Search />
+              </div>
+            : null}
             <Link href={`/user/${userID}`} className="ml-auto h-full grid place-items-center">
               <Store size={28} className="text-tertiary " />
             </Link>
@@ -26,9 +28,12 @@ const Navbar = async({userImage , userID} : {userImage : string , userID : strin
             <UserIco userImage={userImage }/>
         </div>
       </div>
-      <div className="md:hidden mx-auto w-11/12 flex flex-row  ">
-        <Search />
-      </div>
+      {search ? 
+        <div className="md:hidden mx-auto w-11/12 flex flex-row  ">
+          <Search />
+        </div>
+        : null
+      }
       </>
   );
 };
