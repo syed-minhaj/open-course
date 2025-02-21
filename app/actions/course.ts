@@ -107,3 +107,25 @@ export async function BuyCourse(courseID : string){
     }
     return {err: null}
 }
+
+export async function DeleteCourse(courseID : string){
+    const session = await getServerSession();
+    if(!session || !session.user || !session.user.email){
+        return {err:"Session failed"};
+    }
+    const user = await getUserByEmail(session.user.email);
+    if(!user){
+        return {err:"User not found"};
+    }
+    try{
+        await prisma.course.delete({
+            where: {
+                id: courseID,
+                creatorId: user.id
+            }
+        })
+    }catch(e : any){
+        return {err: `${e.message} `}
+    }
+    return {err: null}
+}

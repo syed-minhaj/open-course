@@ -1,8 +1,10 @@
 "use client"
-import { ShoppingCart } from "lucide-react";
+
 import ExpandableDescription from "./components/DescriptionComponent";
-import { BuyCourse } from "@/app/actions/course";
+import { DeleteCourse } from "@/app/actions/course";
 import OrderSection from "./components/OrderSection";
+import { useState } from "react";
+import { revalidatePath_fromClient } from "@/app/actions/actions";
 
 type course = {
     id: string,
@@ -12,17 +14,19 @@ type course = {
     image: string
 }
 
-const Hero = ({owned ,  course , inCart} : {owned : boolean , course : course , inCart : boolean}) => {
+const Hero = ({owned ,  course , inCart , admin} : {owned : boolean , course : course , inCart : boolean , admin : boolean }) => {
 
-    function Buy(){
-        if(!owned){
-            // do you want to buy this course
-            alert("You want to buy this course");
-            
-            BuyCourse(course.id).then(()=>{
-                alert("Course bought");
-            })
+    const [deleting , setDeleting] = useState(false);
+    function deleteCourse(){
+        if(!confirm("Are you sure you want to delete this course?")){
+            return;
         }
+        setDeleting(true);
+        DeleteCourse(course.id).then(()=>{
+            alert(`${course.name} deleted `);
+            revalidatePath_fromClient(document.referrer);
+            window.history.back();
+        })
     }
 
     return(
@@ -37,7 +41,13 @@ const Hero = ({owned ,  course , inCart} : {owned : boolean , course : course , 
                 {!owned ? 
                     <OrderSection courseID={course.id} coursePrice={course.price} inCart={inCart} />
                 : null }
-                
+                {admin ? 
+                    <button onClick={deleteCourse} disabled={deleting}
+                            className=" bg-red-600 bg-opacity-10 hover:bg-opacity-25 text-red-600 border 
+                                        border-red-600 p-1 px-2 rounded disabled:opacity-50 my-2 "> 
+                        Remove Coures 
+                    </button>
+                : null }
             </div>
         </div>
     )

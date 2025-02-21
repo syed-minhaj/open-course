@@ -108,9 +108,9 @@ export default async function CoursePage({params} : {params : any}) {
                 <Navbar  userImage={user.image} userID={user.id}/>
             </header>
             <main className="w-full flex flex-col items-center absolute top-0  bg-primary ">
-                <Hero owned={await owned()} inCart={inCart} 
+                <Hero owned={await owned()} inCart={inCart} admin={Admin()}
                 course={{id : course.id , name : course.name , description : course.description , price : course.price , image: course.image}} />
-                <ModulesSection modules={course.modules} owned={await owned()} />
+                <ModulesSection modules={course.modules} owned={await owned()}  />
             </main>
         </div>
     )
