@@ -31,11 +31,13 @@ const OrderSection = ({courseID , coursePrice , inCart} : {courseID : string , c
         if(inCart){
             RemoveFromCart(courseID).then(({err})=>{
                 setDisableCart(false);
+                revalidatePath_fromClient(`/course/${courseID}`);
                 if(err){alert(err)}
             })
         }else{
             AddToCart(courseID).then(({err})=>{
                 setDisableCart(false);
+                revalidatePath_fromClient(`/course/${courseID}`);
                 if(err){alert(err)}
             })
         }
