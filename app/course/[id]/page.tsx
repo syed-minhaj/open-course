@@ -54,6 +54,32 @@ const userInList = async (userId : string , users : {id : string}[] ) => {
     })
 }
 
+export async function generateMetadata({
+  params,
+}: {
+  params: any;
+}) {
+    if(!params || !params.id){
+        return null;
+    }
+  const course = await prisma.course.findUnique({
+    where: {
+      id: params.id,
+    },
+    select: {
+      name: true,
+      description: true,
+    },
+  });
+  if (!course) {
+    return null;
+  }
+  return {
+    title: course.name,
+    description: course.description,
+  };
+}
+
 
 export default async function CoursePage({params} : {params : any}) {
    

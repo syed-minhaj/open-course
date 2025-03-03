@@ -40,6 +40,32 @@ const ViewerImage = async(email : string) => {
 }
 
 
+export async function generateMetadata({
+  params,
+}: {
+  params: any;
+}) {
+  if(!params || !params.id){
+    return null;
+  }
+  const user = await prisma.user.findUnique({
+    where: {
+      id: params.id,
+    },
+    select: {
+      name: true,
+      bio: true,
+    },
+  });
+  if (!user) {
+    return null;
+  }
+  return {
+    title: user.name,
+    description: user.bio,
+  };
+}
+
 
 export default async function UserPage({params} : any) {
     

@@ -16,6 +16,11 @@ const getUserByEmail = async (email:string) => {
   })
 }
 
+export const metadata = {
+  title: "Bucket items",
+  description: "OpenCourse : Market place for open sourse course . Course made using online resourses",
+};
+
 export default async function Bucket() {  
     const session = await getServerSession();
     if(!session || !session.user || !session.user.email){
