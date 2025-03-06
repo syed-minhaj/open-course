@@ -75,7 +75,7 @@ const getCourseOwner = async(id : string) => {
     })
 }
 
-const CourseSection = async({page , query , userID}:{ page:string | undefined , query:string | undefined , userID:string }) => {
+const CourseSection = async({page , query , userID}:{ page:string | undefined , query:string | undefined , userID:string | undefined }) => {
 
     const course = await getCourses(page , query);
     const total = await getTotal(query);
@@ -90,9 +90,9 @@ const CourseSection = async({page , query , userID}:{ page:string | undefined , 
                 {course.map(async (course : Course , index : number)=>{
                     const courseOwner = await getCourseOwner(course.id);
                     function isOwner(){
-                      if(userID == course.creatorId){
+                      if(userID === course.creatorId){
                         return true;
-                      }else if(courseOwner && courseOwner.buyers.some(buyer => buyer.id == userID)){
+                      }else if(courseOwner && courseOwner.buyers.some(buyer => buyer.id === userID)){
                         return true;
                       }else{
                         return false;

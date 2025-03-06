@@ -32,9 +32,7 @@ export default function RootLayout({
       >
         <Providers>
           <NextTopLoader/>
-          <SignInPage >
             {children}
-          </SignInPage >
         </Providers>
       </body>
     </html>

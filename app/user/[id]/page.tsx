@@ -24,19 +24,23 @@ const getUser = async(id: string) : Promise<adminUser | null> => {
 
 
 
-const ViewerImage = async(email : string) => {
+const Viewer = async(email : string | undefined | null) => {
+    if(!email){
+        return ;
+    }
     const user = await prisma.user.findUnique({
         where: {
             email: email
         },
         select: {
+            id : true,
             image: true
         }
     })
     if(!user){
         redirect('/')
     }
-    return user.image;
+    return user;
 }
 
 
@@ -45,12 +49,13 @@ export async function generateMetadata({
 }: {
   params: any;
 }) {
-  if(!params || !params.id){
-    return null;
+  const {id} = await params;
+  if (!id) {
+    redirect('/');
   }
   const user = await prisma.user.findUnique({
     where: {
-      id: params.id,
+      id: id,
     },
     select: {
       name: true,
@@ -58,7 +63,7 @@ export async function generateMetadata({
     },
   });
   if (!user) {
-    return null;
+    redirect('/');
   }
   return {
     title: user.name,
@@ -79,7 +84,7 @@ export default async function UserPage({params} : any) {
         getUser(id)
     ]);
 
-    if (!user || !session || !session.user || !session.user.email){
+    if (!user ){
         redirect('/')
     }
 
@@ -90,27 +95,20 @@ export default async function UserPage({params} : any) {
             return false;
         }
     }
-    const viewer : nonAdminUser | null = (user ?{
-        id: user.id,
-        name: user.name,
-        image: user.image,
-        bio: user.bio
-    } : null)
-
-    if(!viewer){
-        redirect('/')
-    }
+    
+    const viewer = await Viewer(session?.user?.email);
+    
     
     return (
         <div className="flex flex-col items-center  min-h-screen bg-primary relative ">
             <header className="w-full">
-                <Navbar  userImage={await ViewerImage(session.user.email)} userID={id}/>
+                <Navbar  userImage={viewer?.image} userID={viewer?.id}/>
             </header>
             <main className="md:w-9/12 w-11/12 flex flex-col md:mt-14 mt-10 
                             space-y-5 divide-y divide-gray-300 dark:divide-gray-700  ">
                 <Profile user={user} admin={isAdmin()} id={id} />
                 <div className="py-5">
-                    <CourseSection user={viewer} admin={isAdmin()} />
+                    <CourseSection userID={id} admin={isAdmin()} />
                 </div>
             </main>
         </div>

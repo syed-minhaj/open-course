@@ -9,7 +9,7 @@ import {PackageCheck} from "lucide-react";
 import { createCourse ,createModule, revalidatePath_fromClient } from "@/app/actions/actions";
 import { resizeFile } from "@/app/utils/imageResize";
 
-const CreationWindow = ({user, admin , setWindowOpen} : {user: adminUser | nonAdminUser , admin: boolean, setWindowOpen: React.Dispatch<React.SetStateAction<boolean>>}) => {
+const CreationWindow = ({userID, admin , setWindowOpen} : {userID: string , admin: boolean, setWindowOpen: React.Dispatch<React.SetStateAction<boolean>>}) => {
     
     const [name , setName] = useState<string>("");
     const [description , setDescription] = useState<string>("");
@@ -80,7 +80,7 @@ const CreationWindow = ({user, admin , setWindowOpen} : {user: adminUser | nonAd
                 description,
                 image: await resizeImage(image),
                 modules: resizedModules, // Use the resized modules
-                creatorId: user.id,
+                creatorId: userID,
                 price: 0,
             };
             setIsCreating(`Creating ${course.name} ...`);

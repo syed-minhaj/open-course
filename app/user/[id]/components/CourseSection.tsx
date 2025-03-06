@@ -1,5 +1,5 @@
 
-import { adminUser, nonAdminUser , Course} from "@/app/types";
+import { Course} from "@/app/types";
 import CoursePreview from "@/app/components/CoursePreview";
 import Create from "./courseSection/Create";
 import { prisma } from "@/app/lib/prisma";
@@ -30,13 +30,13 @@ const getCourseOwner = async(id : string) => {
     })
 }
 
-const CourseSection = async({user, admin } : {user: adminUser | nonAdminUser, admin: boolean}) => {
+const CourseSection = async({userID, admin } : {userID: string, admin: boolean}) => {
     
-    const course = await getCourse(user.id);
+    const course = await getCourse(userID);
     return(
         <div className="w-full min-h-36 flex flex-col gap-2 ">
             {admin ? 
-                <Create user={user} admin={admin} />
+                <Create userID={userID} admin={admin} />
             : null
             }
             <div className="w-full min-h-48 grid grid-cols-1 md:grid-cols-3 xl:grid-cols-4 gap-2  ">
@@ -45,7 +45,7 @@ const CourseSection = async({user, admin } : {user: adminUser | nonAdminUser, ad
                     function isOwner(){
                       if(admin){
                         return true;
-                      }else if(courseOwner && courseOwner.buyers.some(buyer => buyer.id == user.id)){
+                      }else if(courseOwner && courseOwner.buyers.some(buyer => buyer.id == userID)){
                         return true;
                       }else{
                         return false;

@@ -17,11 +17,11 @@ async function getUserByEmail(email : string){
 export async function AddToCart(courseID : string){
     const session = await getServerSession();
     if(!session || !session.user || !session.user.email){
-        return {err: "Session failed"};
+        return {err: "Session failed : login first "};
     }
     const user = await getUserByEmail(session.user.email);
     if(!user){
-        return {err: "User not found"};
+        return {err: "User not found : login first "};
     }
     await prisma.course.update({
         where: {
@@ -65,11 +65,11 @@ export async function RemoveFromCart(courseID : string){
 export async function BuyCourse(courseID : string){
     const session = await getServerSession();
     if(!session || !session.user || !session.user.email){
-        return {err:"Session failed"};
+        return {err:"Session failed : login first "};
     }
     const user = await getUserByEmail(session.user.email);
     if(!user){
-        return {err:"User not found"};
+        return {err:"User not found : login first "};
     }
     try{
         await prisma.course.update({

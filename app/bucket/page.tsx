@@ -24,11 +24,11 @@ export const metadata = {
 export default async function Bucket() {  
     const session = await getServerSession();
     if(!session || !session.user || !session.user.email){
-        redirect('/')
+        redirect('/signIn')
     }
     const user = await getUserByEmail(session.user.email);
     if(!user){
-        redirect('/')
+        redirect('/signIn')
     }
     return (
         <div className="flex flex-col min-h-screen bg-primary  ">

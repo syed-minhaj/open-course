@@ -48,7 +48,10 @@ const getUserByEmail = async(email :string | null | undefined) => {
     return user;
 }
 
-const userInList = async (userId : string , users : {id : string}[] ) => {
+const userInList = async (userId : string | undefined , users : {id : string}[] ) => {
+    if(!userId){
+        return false;
+    }
     return users.some((user : {id: string })=>{
         return user.id == userId
     })
@@ -88,18 +91,14 @@ export default async function CoursePage({params} : {params : any}) {
         redirect('/')
     }
     const session = await getServerSession();
-    if(!session || !session.user || !session.user.email){
-        redirect('/')
-    }
+    
     
     const [course , user] : [Course | null , {id: string , image : string} | null] = await Promise.all([
         getCourseById(id),
-        getUserByEmail(session.user.email)
+        getUserByEmail(session?.user?.email)
     ])
 
-    if(!user){
-        redirect('/')
-    }
+    
 
     if(!course ){
         return (
@@ -113,7 +112,7 @@ export default async function CoursePage({params} : {params : any}) {
     }
 
     const Admin = () => {
-        if(user.id == course.creatorId){
+        if(user && (user.id == course.creatorId)){
             return true;
         }else{
             return false;
@@ -126,12 +125,12 @@ export default async function CoursePage({params} : {params : any}) {
             return await userInList(user.id, course.buyers)
         }
     }
-    const inCart = await userInList(user.id, course.inCart);
+    const inCart = await userInList(user?.id, course.inCart);
 
     return (
         <div className="flex flex-col items-center  min-h-screen  bg-primary relative ">
             <header className="w-full z-40 ">
-                <Navbar  userImage={user.image} userID={user.id}/>
+                <Navbar  userImage={user?.image} userID={user?.id}/>
             </header>
             <main className="w-full flex flex-col items-center absolute top-0  bg-primary ">
                 <Hero owned={await owned()} inCart={inCart} admin={Admin()}

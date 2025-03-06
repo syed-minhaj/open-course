@@ -4,7 +4,7 @@ import { useState , Suspense } from "react";
 import CreationWindow from "./CreationWindow";
 import {PackagePlus} from "lucide-react";
 
-const Create = ({user, admin} : {user: adminUser | nonAdminUser, admin: boolean}) => {
+const Create = ({userID, admin} : {userID: string, admin: boolean}) => {
     const [windowOpen , setWindowOpen] = useState(false);
 
     return (
@@ -19,7 +19,7 @@ const Create = ({user, admin} : {user: adminUser | nonAdminUser, admin: boolean}
         {windowOpen ? 
             <Suspense fallback={<div className="w-screen h-screen fixed top-0 left-0 z-20  
                 bg-black bg-opacity-25 backdrop-blur-sm flex justify-center items-center"></div>}>
-                <CreationWindow user={user} admin={admin} setWindowOpen={setWindowOpen} /> 
+                <CreationWindow userID={userID} admin={admin} setWindowOpen={setWindowOpen} /> 
             </Suspense>
         : null}
         </>
