@@ -1,7 +1,7 @@
 import CoursePreview from "../components/CoursePreview"
 import { prisma } from "../lib/prisma"
 import { Course } from "../types"
-import PageChanger from "./PageChnager"
+import PageChanger from "../components/PageChnager"
 
 const getCourses = async(page : string | undefined , query : string | undefined) => {
   const pageNumber = (page ? Number(page) : 1) || 3;

@@ -1,7 +1,7 @@
 
 import React from "react";
 import UserIco from "./Navbar-components/UserIco";
-import {Store , ShoppingCart} from "lucide-react";
+import {Store , ShoppingCart, ShoppingBag} from "lucide-react";
 import Search from "./Navbar-components/Search";
 import Link from "next/link";
 
@@ -28,6 +28,9 @@ const Navbar = async({userImage , userID , search } : {userImage : string | unde
                   </Link>
                   <Link href={`/bucket`} className="h-full grid place-items-center">
                     <ShoppingCart size={28} className="text-tertiary my-auto" />
+                  </Link>
+                  <Link href={`/inventory`} className="h-full grid place-items-center">
+                    <ShoppingBag size={28} className="text-tertiary my-auto" />
                   </Link>
                 </>
               : null}
