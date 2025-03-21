@@ -2,6 +2,7 @@
 
 import {prisma} from "../lib/prisma";
 import { getServerSession } from "next-auth"
+import { supabase } from "../lib/supabase";
 
 async function getUserByEmail(email : string){
     return await prisma.user.findUnique({
@@ -118,10 +119,57 @@ export async function DeleteCourse(courseID : string){
         return {err:"User not found"};
     }
     try{
+        const course = await prisma.course.findUnique({
+            where: {
+                id: courseID
+            },
+            select : {
+                creatorId: true,
+                image: true,
+                modules : {
+                    select : {
+                        image : true
+                    }
+                }
+            }
+        })
+        if(!course){
+            return {err: "Course not found"}
+        }
+        if(course.creatorId !== user.id){
+            return {err: "You are not the creator of this course"}
+        }
+        await prisma.modules.deleteMany({
+            where: {
+                courseId: courseID
+            }
+        })
+        await prisma.review.deleteMany({
+            where: {
+                courseId: courseID
+            }
+        })
+        const urlparts = course.image.split('storage/v1/object/public/')
+        const pathParts = urlparts[1].split('/',2)
+        const bucketName = pathParts[0]
+        const filePath = urlparts[1].substring(bucketName.length + 1 )
+        await supabase.storage
+                .from(bucketName)
+                .remove([filePath])
+        course.modules.forEach(async (module)=>{
+            if (module.image) {
+                const m_urlparts = module.image.split('storage/v1/object/public/')
+                const m_pathParts = m_urlparts[1].split('/',2)
+                const m_bucketName = m_pathParts[0]
+                const m_filePath = m_urlparts[1].substring(m_bucketName.length + 1 )
+                await supabase.storage
+                    .from(m_bucketName)
+                    .remove([m_filePath])
+            }
+        })
         await prisma.course.delete({
             where: {
-                id: courseID,
-                creatorId: user.id
+                id: courseID
             }
         })
     }catch(e : any){

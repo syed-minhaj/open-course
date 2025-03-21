@@ -22,7 +22,11 @@ const Hero = ({owned ,  course , inCart , admin} : {owned : boolean , course : c
             return;
         }
         setDeleting(true);
-        DeleteCourse(course.id).then(()=>{
+        DeleteCourse(course.id).then((res)=>{
+            if(res.err){
+                alert(`${res.err}`)
+                return;
+            }
             alert(`${course.name} deleted `);
             revalidatePath_fromClient(document.referrer);
             window.history.back();

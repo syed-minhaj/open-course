@@ -1,5 +1,5 @@
 "use server";
-import { createClient } from "@supabase/supabase-js";
+import { supabase } from "@/app/lib/supabase";
 import {prisma} from "../lib/prisma";
 import { validateUserAccess } from "../utils/validate_user";
 import { revalidatePath } from "next/cache";
@@ -19,15 +19,7 @@ export async function revalidatePath_fromClient(path:string){
     return;
 }
 
-const supabase = createClient(
-    process.env.NEXT_PUBLIC_SUPABASE_URL ?? " ",
-    process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY ?? " ",
-    {
-      auth: {
-        persistSession: false,
-      }
-    }
-);
+
 
 export async function getUserByID(id: string){
     return prisma.user.findFirst({
