@@ -100,7 +100,7 @@ export default async function UserPage({params} : any) {
     
     
     return (
-        <div className="flex flex-col items-center  min-h-screen bg-primary relative ">
+        <div className="flex flex-col items-center  min-h-screen backgroundGradient relative ">
             <header className="w-full">
                 <Navbar  userImage={viewer?.image} userID={viewer?.id}/>
             </header>

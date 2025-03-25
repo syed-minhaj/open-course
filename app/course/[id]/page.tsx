@@ -102,7 +102,7 @@ export default async function CoursePage({params} : {params : any}) {
 
     if(!course ){
         return (
-            <div className="flex flex-col items-center justify-center min-h-screen bg-primary relative ">
+            <div className="flex flex-col items-center justify-center min-h-screen backgroundGradient relative ">
                 <h1 className="text-4xl font-bold m-2 ">
                     Course not found
                 </h1>
@@ -128,11 +128,11 @@ export default async function CoursePage({params} : {params : any}) {
     const inCart = await userInList(user?.id, course.inCart);
 
     return (
-        <div className="flex flex-col items-center  min-h-screen  bg-primary relative ">
+        <div className="flex flex-col items-center  min-h-screen  backgroundGradient relative ">
             <header className="w-full z-40 ">
                 <Navbar  userImage={user?.image} userID={user?.id}/>
             </header>
-            <main className="w-full flex flex-col items-center absolute top-0  bg-primary ">
+            <main className="w-full flex flex-col items-center absolute top-0  backgroundGradient ">
                 <Hero owned={await owned()} inCart={inCart} admin={Admin()}
                 course={{id : course.id , name : course.name , description : course.description , price : course.price , image: course.image}} />
                 <ModulesSection modules={course.modules} owned={await owned()}  />

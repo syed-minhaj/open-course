@@ -17,6 +17,15 @@
   --color-accent: hsl(123, 80%, 80%);
 }
 
+.backgroundGradient {
+  background: linear-gradient(135deg, hsl(183, 50%, 92%), hsl(183, 50%, 87%));
+}
+.dark {
+  .backgroundGradient {
+    background: linear-gradient(135deg, hsl(183, 50%, 12%), hsl(183, 50%, 15%)); 
+  }
+}
+
 .text-primary{
   @apply text-gray-900 dark:text-gray-100
 }

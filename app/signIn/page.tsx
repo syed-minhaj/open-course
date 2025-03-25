@@ -7,7 +7,7 @@ export default async function SignIn() {
     const session = await getServerSession();
     if (session && session.user) {
         return (
-            <div className="h-screen bg-primary">
+            <div className="h-screen backgroundGradient">
                 <div className=" pt-4 pl-4 font-bold text-tertiary " >OpenCourse</div>
                 <div className="pt-40   flex flex-row  justify-center items-start ">
                     <div className="flex flex-col items-center justify-around  ">
@@ -22,7 +22,7 @@ export default async function SignIn() {
         )
     }
     return (
-        <div className="h-screen bg-primary">
+        <div className="h-screen backgroundGradient">
             <div className=" pt-4 pl-4 font-bold text-tertiary " >OpenCourse</div>
             <div className="pt-40   flex flex-row  justify-center items-start ">
                 <div className="flex flex-col items-center justify-around  ">

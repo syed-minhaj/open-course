@@ -31,7 +31,7 @@ export default async function Home({searchParams}:any) {
   
 
   return (
-    <div className="flex flex-col  min-h-screen bg-primary ">
+    <div className="flex flex-col  min-h-screen backgroundGradient ">
       <Navbar userImage={user?.image} userID={user?.id} search />
       <main className="md:w-9/12 w-11/12 mx-auto my-2 ">
         {query ? 

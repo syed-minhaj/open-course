@@ -3,9 +3,10 @@ import { prisma } from "../lib/prisma"
 import { Course } from "../types"
 import PageChanger from "../components/PageChnager"
 
+
+const coursesperPage = 8;
 const getCourses = async(page : string | undefined , query : string | undefined) => {
-  const pageNumber = (page ? Number(page) : 1) || 3;
-  console.log(pageNumber);
+  const pageNumber = (page ? Number(page) : 1) ;
   const courses = await prisma.course.findMany({
     where: query ? {
       OR: [
@@ -26,8 +27,8 @@ const getCourses = async(page : string | undefined , query : string | undefined)
     orderBy: {
       avgRating: 'desc'
     },
-    skip: ((pageNumber - 1) * 2) ,
-    take: 2,
+    skip: (pageNumber - 1) * coursesperPage,
+    take: coursesperPage,
     include:{
       modules: true
     },
@@ -105,7 +106,7 @@ const CourseSection = async({page , query , userID}:{ page:string | undefined , 
                     )
                 })}
             </div>
-            <PageChanger currentPage={Number(page ?? 1)} totalPages={10} />
+            <PageChanger currentPage={Number(page ?? 1)} totalPages={Math.ceil(total / coursesperPage)} />
         </>
     )
 }
