@@ -5,13 +5,14 @@ import Image from "next/image";
 
 const Module = ({module , owned } : {module : module, owned : boolean }) => {
     return(
-        <div  className="bg-prePrimary w-full rounded p-2 
-        shadow-sm shadow-slate-700 dark:shadow-black drop-shadow-sm ">
-            <div className="flex flex-row gap-2 items-center">
+        <div  className="dark:bg-gray-200 bg-gray-700 bg-opacity-[0.05] dark:border-gray-200 border 
+        border-gray-700 dark:border-opacity-10 border-opacity-10 backdrop-blur-md w-full rounded-lg p-4 dark:bg-opacity-5 
+        shadow-sm shadow-slate-700 dark:shadow-black drop-shadow-sm " >
+            <div className="flex flex-row gap-2 ">
                 <span className="opacity-65 ">{module.indexInCourse + 1}</span>
                 <h1 className="text-xl  text-primary ">{module.name}</h1>
                 {module.image ?
-                    <Image className="ml-auto h-[120] w-[180] rounded object-cover " src={module.image} alt={module.name} width={180} height={180} />
+                    <Image className="ml-auto h-[80] w-[120] rounded object-cover " src={module.image} alt={module.name} width={180} height={180} />
                 : null}
             </div>
             { owned ? 

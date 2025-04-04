@@ -3,26 +3,26 @@
 @tailwind utilities;
 
 :root {
-  --color-primary: hsl(183, 50%, 90%);
-  --color-prePrimary: hsl(183, 50%, 95%);
+  --color-primary: hsl(182, 49%, 90%);
+  --color-prePrimary: hsl(185, 52%, 95%);
   --color-secondary: hsl(183, 50%, 10%);
   --color-tertiary: hsl(243, 80%, 20%);
-  --color-accent: hsl(123, 80%, 20%);
+  --color-accent: #007a63;
 }
 .dark {
-  --color-primary: hsl(183, 50%, 10%);
-  --color-prePrimary: hsl(183, 50%, 15%);
-  --color-secondary: hsl(183, 50%, 90%);
+  --color-primary: hsl(198, 80%, 8%);
+  --color-prePrimary: hsl(197, 80%, 12%);
+  --color-secondary: hsl(197, 80%, 90%);
   --color-tertiary: hsl(243, 80%, 80%);
-  --color-accent: hsl(123, 80%, 80%);
+  --color-accent: #00e195;
 }
 
 .backgroundGradient {
-  background: linear-gradient(135deg, hsl(183, 50%, 92%), hsl(183, 50%, 87%));
+  background-color : var(--color-primary);
 }
 .dark {
   .backgroundGradient {
-    background: linear-gradient(135deg, hsl(183, 50%, 12%), hsl(183, 50%, 15%)); 
+    background-color : var(--color-primary);
   }
 }
 
@@ -50,5 +50,5 @@ button {
 }
 
 body {
-  font-family: Arial, Helvetica, sans-serif;
+  font-family: Arial, Helvetica, sans-serif ;
 }

@@ -44,13 +44,13 @@ const OrderSection = ({courseID , coursePrice , inCart} : {courseID : string , c
     }
 
     return(
-            <div className="flex gap-1 flex-col sm:flex-row-reverse sm:w-fit font-semibold mt-5 ">
+            <div className="flex gap-2 flex-col sm:flex-row sm:w-fit font-semibold mt-5 ">
                 <button onClick={Buy} disabled={buying}
-                className="p-2 rounded bg-accent text-[--color-primary] min-w-[91] disabled:opacity-45 "> 
+                className="p-2 rounded-lg bg-accent text-[--color-primary] min-w-[91] disabled:opacity-45 "> 
                     { coursePrice == 0 ? 'Free' : '$'+coursePrice }
                 </button>
                 <button onClick={OnCartClick} disabled={disableCart}
-                className="p-2 rounded border border-accent flex flex-row justify-center min-w-[91] disabled:opacity-45 "> 
+                className="p-2 rounded-lg border border-accent flex flex-row justify-center min-w-[91] disabled:opacity-45 "> 
                     <ShoppingCart />
                     {inCart ?
                         " Remove"
