@@ -2,6 +2,7 @@ import { Course } from "@/app/types"
 import Link from "next/link";
 import { Package } from "lucide-react";
 import BuyCourse from "./Button/BuyCourse";
+import Image from "next/image"
 
 const CoursePreviw = ({course, owner } : {course: Course, index: number, owner: boolean }) => {
     return(
@@ -9,7 +10,8 @@ const CoursePreviw = ({course, owner } : {course: Course, index: number, owner: 
         bg-prePrimary rounded-lg  shadow-sm shadow-slate-700 dark:shadow-black drop-shadow-sm">
             
             <div className="w-28 flex flex-col justify-between  md:w-full   ">
-                <img src={course.image} alt={course.name} className=" h-28 md:h-32 md:w-full w-28 object-cover rounded-lg md:rounded-none "/>
+                <Image src={course.image} alt={course.name} height={128} width={205}
+                 className=" h-28 md:h-32 md:w-full w-28 object-cover rounded-lg md:rounded-none "/>
                 <div className="flex flex-row justify-between md:hidden">
                     <Link href={`/course/${course.id}`} className="md:ml-auto text-accent hover:opacity-65 h-fit my-auto ">
                         details

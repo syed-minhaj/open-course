@@ -12,7 +12,7 @@ const Module = ({module , owned } : {module : module, owned : boolean }) => {
                 <span className="opacity-65 ">{module.indexInCourse + 1}</span>
                 <h1 className="text-xl  text-primary ">{module.name}</h1>
                 {module.image ?
-                    <Image className="ml-auto h-[80] w-[120] rounded object-cover " src={module.image} alt={module.name} width={180} height={180} />
+                    <Image className="ml-auto h-[80] w-[120] rounded object-cover " src={module.image} alt={module.name} width={120} height={80} />
                 : null}
             </div>
             { owned ? 
