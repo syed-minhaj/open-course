@@ -28,11 +28,11 @@ export default async function Inventory({searchParams}:any) {
   const {query} = await searchParams;
   const session = await getServerSession();
   if(!session || !session.user || !session.user.email){
-    redirect('/siginIn')
+    redirect('/signIn')
   }
   const user =  await getUserByEmail(session.user.email) ;
   if (!user){
-    redirect('siginIn')
+    redirect('signIn')
   }
 
   return (
