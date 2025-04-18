@@ -30,6 +30,9 @@ export default {
       minWidth: {
         "screen": "100dvw",
       },
+      fontFamily: {
+        nunito: ['var(--font-nunito)'],
+      },
     },
   },
   plugins: [],
