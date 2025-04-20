@@ -2,7 +2,7 @@ import CoursePreview from "../components/CoursePreview"
 import { prisma } from "../lib/prisma"
 import { Course } from "../types"
 import PageChanger from "../components/PageChnager"
-
+import Discover from "./Discover"
 
 const coursesperPage = 8;
 const getCourses = async(page : string | undefined , query : string | undefined) => {
@@ -76,6 +76,26 @@ const getCourseOwner = async(id : string) => {
     })
 }
 
+const getfeaturedCourses = async() => {
+  return await prisma.course.findMany({
+    where: {
+        id : {
+            in: [
+                 "a6efb9c9-d2df-4af8-92f3-9d955d00897b" , 
+                 "fc4c8c84-6e61-4b2b-b4bc-73520b42429b" ,
+                 "32dab459-cb4e-44fe-b56f-44c076a380f3" ,
+                 "254a7935-d1f4-4b09-bd58-045465fab6a1"
+                ]
+        }
+    },
+    select : {
+        id : true,
+        name : true,
+        image : true
+    }
+  })
+}
+
 const CourseSection = async({page , query , userID}:{ page:string | undefined , query:string | undefined , userID:string | undefined }) => {
 
     const course = await getCourses(page , query);
@@ -84,9 +104,7 @@ const CourseSection = async({page , query , userID}:{ page:string | undefined , 
         <>
             <div className=" grid grid-cols-1 md:grid-cols-3 xl:grid-cols-4 gap-2 mt-4 ">
                 {!query && (!page || (Number(page) == 1)) ?
-                    <div className="bg-prePrimary rounded-lg  col-span-full h-[280px] w-full p-2 shadow-sm shadow-slate-700 
-                        dark:shadow-black drop-shadow-sm ">
-                    </div>
+                    <Discover courses={await getfeaturedCourses()} />
                 : null }
                 {course.map(async (course : Course , index : number)=>{
                     const courseOwner = await getCourseOwner(course.id);
