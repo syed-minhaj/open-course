@@ -1,5 +1,5 @@
 "use client";
-import { useSearchParams , usePathname , useRouter } from "next/navigation";
+import { useSearchParams , usePathname  } from "next/navigation";
 import { useEffect, useState } from "react";
 
 const Search = () => {
@@ -7,10 +7,21 @@ const Search = () => {
     const path = usePathname();
     const query = searchParams.get("query");
     const [search , setSearch] = useState(query ? query : "");
+
     useEffect(() => {
         setSearch(query ? query : "");
     }, [query])
 
+    useEffect(() => {
+        const timer = setTimeout(() => {
+            if (search !== (query || "")) {
+                handleSearch();
+            }
+        }, 500); 
+        
+        return () => clearTimeout(timer);
+    }, [search]);
+    
     const handleSearch = () => {
         const params = new URLSearchParams();
         if(search == ""){params.delete("query");}
