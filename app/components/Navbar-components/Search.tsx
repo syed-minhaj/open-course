@@ -13,6 +13,7 @@ const Search = () => {
     }, [query])
 
     useEffect(() => {
+        window.stop()
         const timer = setTimeout(() => {
             if (search !== (query || "")) {
                 handleSearch();
