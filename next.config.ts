@@ -2,6 +2,7 @@ import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
   /* config options here */
+  //output: 'standalone',
   images: {
     domains: [
       'i.pinimg.com',
@@ -26,6 +27,7 @@ const nextConfig: NextConfig = {
     //   },
     // ],
   },
+
   // webpack: (config, { webpack }) => {
   //   config.resolve.fallback = {
   //     ...config.resolve.fallback,
