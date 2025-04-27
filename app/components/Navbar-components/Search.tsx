@@ -7,12 +7,17 @@ const Search = () => {
     const path = usePathname();
     const query = searchParams.get("query");
     const [search , setSearch] = useState(query ? query : "");
+    const [siteloaded , setSiteloaded] = useState(false);
 
     useEffect(() => {
         setSearch(query ? query : "");
     }, [query])
 
     useEffect(() => {
+        if(!siteloaded){
+            setSiteloaded(true);
+            return;
+        }
         window.stop()
         const timer = setTimeout(() => {
             if (search !== (query || "")) {

@@ -20,11 +20,11 @@
 .backgroundGradient {
   background-color : var(--color-primary);
 }
-.dark {
+/* .dark {
   .backgroundGradient {
     background-color : var(--color-primary);
   }
-}
+} */
 
 .text-primary{
   @apply text-gray-900 dark:text-gray-100
