@@ -18,7 +18,11 @@ const getCourseById = async(id:string) => {
             id: id
         },
         include: {
-            modules: true ,
+            modules: {
+                orderBy : {
+                    indexInCourse : "asc"
+                },
+            } ,
             buyers: {
                 select: {
                     id: true
