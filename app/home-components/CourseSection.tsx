@@ -81,10 +81,10 @@ const getfeaturedCourses = async() => {
     where: {
         id : {
             in: [
-                 "a6efb9c9-d2df-4af8-92f3-9d955d00897b" , 
-                 "fc4c8c84-6e61-4b2b-b4bc-73520b42429b" ,
-                 "32dab459-cb4e-44fe-b56f-44c076a380f3" ,
-                 "254a7935-d1f4-4b09-bd58-045465fab6a1"
+                 process.env.FEATURED_COURSE_1_ID ?? ""  ,
+                 process.env.FEATURED_COURSE_2_ID ?? "" ,
+                 process.env.FEATURED_COURSE_3_ID ?? "" ,
+                 process.env.FEATURED_COURSE_4_ID ?? ""
                 ]
         }
     },
