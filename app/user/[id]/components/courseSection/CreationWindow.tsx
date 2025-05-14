@@ -111,7 +111,7 @@ const CreationWindow = ({userID, admin , setWindowOpen} : {userID: string , admi
             </div> : null}
 
             <div className="w-5/6 h-5/6 bg-white dark:bg-black rounded overflow-scroll overflow-x-hidden bg-opacity-25 
-                scrollbar-hide scrollbar-thumb-primary scrollbar-track-primary backdrop-blur-xl dark:bg-opacity-15 relative ">
+                scrollbar-hide scrollbar-thumb-primary scrollbar-track-primary  dark:bg-opacity-25 relative ">
                 <div className="w-[100d%]  m-2 flex gap-2 flex-col ">
                 
                     <h1 className="  text-primary p-2  ">Create a Course</h1>

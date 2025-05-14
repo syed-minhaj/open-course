@@ -6,7 +6,7 @@ import Image from "next/image";
 const Module = ({module , owned } : {module : module, owned : boolean }) => {
     return(
         <div  className="dark:bg-gray-200 bg-gray-700 bg-opacity-[0.05] dark:border-gray-200 border 
-        border-gray-700 dark:border-opacity-10 border-opacity-10 backdrop-blur-md w-full rounded-lg p-4 dark:bg-opacity-5 
+        border-gray-700 dark:border-opacity-10 border-opacity-10  w-full rounded-lg p-4 dark:bg-opacity-5 
         shadow-sm shadow-slate-700 dark:shadow-black drop-shadow-sm " >
             <div className="flex flex-row gap-2 ">
                 <span className="opacity-65 ">{module.indexInCourse + 1}</span>
