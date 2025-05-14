@@ -35,7 +35,7 @@ const Hero = ({owned ,  course , inCart , admin} : {owned : boolean , course : c
 
     return(
         <div style={{backgroundImage: `url(${course.image})`}}
-             className="min-h-[clac(65vh+70px)] w-full z-10 text-primary flex bg-cover justify-center relative bg-center rounded-b-3xl ">
+             className="h-[calc(65vh+70px)] w-full z-10 text-primary flex bg-cover justify-center relative bg-center rounded-b-3xl ">
             <div className="bg-white dark:bg-black absolute top-0 right-0 left-0 bottom-0 opacity-75 dark:opacity-75 z-20 rounded-b-3xl  "></div>
             <div className="w-11/12 my-[20dvh] mt-[calc(20vh+70px)] z-30 text-primary ">
                 <h1 className="text-4xl font-bold font-nunito ">
