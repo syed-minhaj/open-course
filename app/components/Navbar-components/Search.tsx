@@ -23,7 +23,7 @@ const Search = () => {
             if (search !== (query || "")) {
                 handleSearch();
             }
-        }, 500); 
+        }, 800); 
         
         return () => clearTimeout(timer);
     }, [search]);
