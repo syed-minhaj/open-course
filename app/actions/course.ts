@@ -3,6 +3,20 @@
 import {prisma} from "../lib/prisma";
 import { getServerSession } from "next-auth"
 import { supabase } from "../lib/supabase";
+import Stripe from "stripe";
+
+type CourseTypeForPayment = {
+    id : string,
+    name: string;
+    image: string;
+    price: number;
+    description: string;
+    creator: {
+        stripeId: string | null;
+    };
+}
+
+const stripe = new Stripe(process.env.STRIPE_SECRET_KEY ?? "");
 
 async function getUserByEmail(email : string){
     return await prisma.user.findUnique({
@@ -63,7 +77,7 @@ export async function RemoveFromCart(courseID : string){
     return {err: null}
 }
 
-export async function BuyCourse(courseID : string){
+export async function BuyCourse(courseID : string ){
     const session = await getServerSession();
     if(!session || !session.user || !session.user.email){
         return {err:"Session failed : login first "};
@@ -72,6 +86,87 @@ export async function BuyCourse(courseID : string){
     if(!user){
         return {err:"User not found : login first "};
     }
+    const course = await prisma.course.findUnique({
+        where: {
+            id: courseID
+        },
+        select : {
+            creator: {
+                select : {
+                    stripeId: true
+                }
+            },
+            image: true,
+            name: true,
+            price: true,
+            description: true,
+
+        }
+    })
+    if(!course){
+        return {err: "Course not found"}
+    }
+    if(course.price > 0){
+        const res =  await BuyCourse_Payment({ 
+            course : { id : courseID ,  ...course } , 
+            userEmail : session.user.email
+        })
+        if (!res.err){
+            return {err: null , paymentURl: res.paymentURl }
+        }
+        return {err: res.err}
+    }else{
+        const res =  await BuyCourse_afterPayment({courseID , userID : user.id})
+        if (res.err){
+            return {err: res.err}
+        }
+        return {err: null}
+    }
+}
+
+async function BuyCourse_Payment({course , userEmail } : {course : CourseTypeForPayment , userEmail : string}){
+    console.log(course.creator.stripeId)
+    if(!course.creator.stripeId){
+        return {err: "course not available"}
+    }
+    try{
+        const striprSession  = await stripe.checkout.sessions.create({
+            payment_method_types: ['card'],
+            line_items: [{
+                price_data: {
+                    currency: 'usd',
+                    product_data: {
+                        name: course.name,
+                        images: [course.image],
+                        description: course.description
+                    },
+                    unit_amount: course.price * 100
+                },
+                quantity: 1
+            }],
+            mode: 'payment',
+            payment_intent_data: {
+                transfer_data:{
+                    destination:course.creator.stripeId,
+                }
+            },
+            metadata: {
+                courseID: course.id
+            },
+            success_url: `http://localhost:3000/course/${course.id}`,
+            cancel_url: `http://localhost:3000/course/${course.id}`,
+            customer_email: userEmail
+        })
+        if(!striprSession.url){
+            return {err: "Stripe session not created"}
+        }
+        return {err: null, paymentURl: striprSession.url}
+    }catch(e : any){
+        return {err: `${e.message} ` }
+    }
+}
+
+export async function BuyCourse_afterPayment({courseID , userID} : {courseID : string , userID : string}){
     try{
         await prisma.course.update({
             where: {
@@ -80,7 +175,7 @@ export async function BuyCourse(courseID : string){
             data: {
                 buyers: {
                     connect: {
-                        id: user.id
+                        id: userID
                     }
                 }
             }
@@ -98,7 +193,7 @@ export async function BuyCourse(courseID : string){
             data: {
                 inCart: {
                     disconnect: {
-                        id: user.id
+                        id: userID
                     }
                 }
             }

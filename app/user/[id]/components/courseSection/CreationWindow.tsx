@@ -8,12 +8,14 @@ import {Reorder } from "framer-motion";
 import {PackageCheck} from "lucide-react";
 import { createCourse ,createModule, revalidatePath_fromClient } from "@/app/actions/actions";
 import { resizeFile } from "@/app/utils/imageResize";
+import { CheckNumberIs2DecimalPlace } from "@/app/utils";
 
 const CreationWindow = ({userID, admin , setWindowOpen} : {userID: string , admin: boolean, setWindowOpen: React.Dispatch<React.SetStateAction<boolean>>}) => {
     
     const [name , setName] = useState<string>("");
     const [description , setDescription] = useState<string>("");
     const [image, setImage] = useState<File | null>(null);
+    const [price , setPrice] = useState<number>(0.00);
     const [modules , setModules] = useState<module[]>([]);
     const [isCreating , setIsCreating] = useState<boolean | string>(false);
 
@@ -62,8 +64,12 @@ const CreationWindow = ({userID, admin , setWindowOpen} : {userID: string , admi
             alert("Course name , description and image are required");
             return;
         }
+        const {err} = CheckNumberIs2DecimalPlace(price);
+        if(err){
+            alert("Price should be in 2 decimal place");
+            return;
+        }
         setIsCreating(true);
-
         try {
 
             const resizedModules = await Promise.all(
@@ -81,17 +87,20 @@ const CreationWindow = ({userID, admin , setWindowOpen} : {userID: string , admi
                 image: await resizeImage(image),
                 modules: resizedModules, // Use the resized modules
                 creatorId: userID,
-                price: 0,
+                price: price,
             };
             setIsCreating(`Creating ${course.name} ...`);
-            const {course_id , creator_id} = await createCourse({...course, modules: []});
-            if(!course_id || !creator_id){return}
-            await Promise.all(course.modules.map(async (module : module) => {
-                await createModule(module, course_id ,creator_id);
-            }))
-            revalidatePath_fromClient(`/user/${creator_id}`)
-            setIsCreating(false);
-            setWindowOpen(false);
+            const res = await createCourse({...course, modules: []});
+            if (res){
+                const {course_id, creator_id} = res;
+                if(!course_id || !creator_id){return}
+                await Promise.all(course.modules.map(async (module : module) => {
+                    await createModule(module, course_id ,creator_id);
+                }))
+                revalidatePath_fromClient(`/user/${creator_id}`)
+                setIsCreating(false);
+                setWindowOpen(false);
+            }
         } catch (error) {
             setIsCreating(false);
             console.error('Error creating course:', error);
@@ -115,7 +124,7 @@ const CreationWindow = ({userID, admin , setWindowOpen} : {userID: string , admi
                 <div className="w-[100d%]  m-2 flex gap-2 flex-col ">
                 
                     <h1 className="  text-primary p-2  ">Create a Course</h1>
-                    <CourseInfo setImage={setImage} setName={setName} setDescription={setDescription}/>
+                    <CourseInfo setImage={setImage} setName={setName} setDescription={setDescription} setPrice={setPrice}/>
                     <h2 className="text-sm  text-primary p-1  ">Add Modules</h2>
                     <AddModule moduleAdded={modelAdded}/>
                     <Reorder.Group className="flex flex-col gap-1" as="ol" 
