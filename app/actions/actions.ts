@@ -4,6 +4,11 @@ import {prisma} from "../lib/prisma";
 import { validateUserAccess } from "../utils/validate_user";
 import { revalidatePath } from "next/cache";
 import { Course_created as Course, module_created as module } from "../types";
+import { redirect } from "next/navigation";
+import { getServerSession } from "next-auth";
+import Stripe from "stripe";
+
+const stripe = new Stripe(process.env.STRIPE_SECRET_KEY ?? "");
 
 async function varifyUserByID(id: string){
     try{
@@ -92,6 +97,19 @@ export async function createCourse (course :Course) {
     if(await varifyUserByID(course.creatorId) != true){
         return {course_id: null , creator_id: null} 
     }
+
+    const userStripeID = await prisma.user.findUnique({
+        where: {
+            id: course.creatorId
+        },
+        select : {
+            stripeId: true
+        }
+    })
+    if (course.price > 0 && ( !userStripeID || userStripeID.stripeId == null )){
+        redirect('/createStripeAccount')
+    }
+
     const filePath = `${course.creatorId}/${Math.round(Math.random()*1000000)}/course.jpg`;
     
     await supabase.storage
@@ -155,4 +173,53 @@ export const createModule = async (module : module , courseId : string , creator
     }
     
     
+}
+
+export async function createStripeAccount(){
+    const session = await getServerSession();
+    if(!session || !session.user || !session.user.email){
+        return {err:"Session failed : login first "};
+    }
+    const user = await prisma.user.findUnique({
+        where: {
+            email: session.user.email
+        },
+    });
+    if(!user){
+        return {err:"User not found : login first "};
+    }
+    if(user.stripeId){
+        return {err:"Stripe ID already added "};
+    }
+    try{
+        const stripeAccount = await stripe.accounts.create({
+            type: 'express',
+            country: 'US',
+            capabilities: {
+                card_payments: {
+                    requested: true
+                },
+                transfers: {
+                    requested: true
+                }
+            }
+        });
+        await prisma.user.update({
+            where: {
+                id: user.id
+            },
+            data: {
+                stripeId: stripeAccount.id
+            }
+        })
+        const accountLink = await stripe.accountLinks.create({
+            account: stripeAccount.id,
+            refresh_url: 'http://localhost:3000/createStripeAccount',
+            return_url: `http://localhost:3000/user/${user.id}`,
+            type: 'account_onboarding',
+        });
+        return {err: null, accountLink: accountLink.url}
+    }catch(e : any){
+        return {err: `${e.message} `}
+    }
 }
