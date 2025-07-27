@@ -16,11 +16,14 @@ const OrderSection = ({courseID , coursePrice , inCart} : {courseID : string , c
                 setBuying(false);
                 return;
             }
-            BuyCourse(courseID).then(({err})=>{
-                if(err){
-                    alert(err);
+            BuyCourse(courseID).then((res)=>{
+                if(res.err){
+                    alert(res.err);
                     setBuying(false);
                     return;
+                }
+                if(res.paymentURl){
+                    window.location.href = res.paymentURl;
                 }
                 revalidatePath_fromClient(`/course/${courseID}`);
             })

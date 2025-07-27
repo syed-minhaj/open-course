@@ -11,12 +11,17 @@ const BuyCourse = ({courseID , coursePrice} : {courseID : string , coursePrice :
 
     function buy(){
         setBuying(true);
-        BuyCourseFunc(courseID).then((res : {err : string | null}) => {
+        BuyCourseFunc(courseID).then((res)=>{
             if(res.err){
-                setBuying(false);
                 alert(res.err);
+                setBuying(false);
+                return;
             }
-            revalidatePath_fromClient(path)
+            if(res.paymentURl){
+                window.location.href = res.paymentURl;
+            }else{
+                revalidatePath_fromClient(path);
+            }
         })
     }
     
