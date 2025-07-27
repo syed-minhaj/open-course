@@ -20,6 +20,7 @@ model User {
   name      String
   image     String
   bio       String?
+  stripeId  String?
   wallet    Int      @default(0)
   createdCourses Course[] @relation("CreatedCourses")
   purchasedCourses Course[] @relation("Purchases")
@@ -31,7 +32,7 @@ model User {
 model Course {
   id          String      @id @default(uuid())
   name        String
-  price       Int
+  price       Float
   image       String
   description String
   modules     Modules[]
