@@ -31,7 +31,6 @@ yarn-error.log*
 .pnpm-debug.log*
 
 # env files (can opt-in for committing if needed)
-.env*
 .env
 # vercel
 .vercel
@@ -44,5 +43,9 @@ next-env.d.ts
 Dockerfile
 docker-compose.yml
 README.Docker.md
+deployment.yaml
+nginx
+service.yaml
 
 /app/components/Navbar-components/TestSearch.tsx
+/app/components/Navbar-components/navB-right.tsx
