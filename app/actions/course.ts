@@ -153,8 +153,9 @@ async function BuyCourse_Payment({course , userEmail } : {course : CourseTypeFor
             metadata: {
                 courseID: course.id
             },
-            success_url: `http://localhost:3000/course/${course.id}`,
-            cancel_url: `http://localhost:3000/course/${course.id}`,
+            // update url to your domain
+            success_url: `${process.env.APP_URL}/course/${course.id}`,
+            cancel_url: `${process.env.APP_URL}/course/${course.id}`,
             customer_email: userEmail
         })
         if(!striprSession.url){
