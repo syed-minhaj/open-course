@@ -214,8 +214,8 @@ export async function createStripeAccount(){
         })
         const accountLink = await stripe.accountLinks.create({
             account: stripeAccount.id,
-            refresh_url: 'http://localhost:3000/createStripeAccount',
-            return_url: `http://localhost:3000/user/${user.id}`,
+            refresh_url: `${process.env.APP_URL}/createStripeAccount`,
+            return_url: `${process.env.APP_URL}/user/${user.id}`,
             type: 'account_onboarding',
         });
         return {err: null, accountLink: accountLink.url}
