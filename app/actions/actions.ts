@@ -223,3 +223,64 @@ export async function createStripeAccount(){
         return {err: `${e.message} `}
     }
 }
+
+export async function editStripeAccount(){
+    const session = await getServerSession();
+    if(!session || !session.user || !session.user.email){
+        return {err:"Session failed : login first "};
+    }
+    const user = await prisma.user.findUnique({
+        where: {
+            email: session.user.email
+        },
+        select: {
+            id: true,
+            stripeId: true
+        }
+    });
+    if(!user){
+        return {err:"User not found : login first "};
+    }
+    if(!user.stripeId){
+        return {err:"Stripe ID already added "};
+    }
+    try{
+        const updateLink = await stripe.accountLinks.create({
+            account: user.stripeId,
+            refresh_url:  `${process.env.APP_URL}/user/${user.id}`,
+            return_url:  `${process.env.APP_URL}/user/${user.id}`,
+            type: 'account_onboarding',
+        });
+        return {err: null, updateLink: updateLink.url}
+    }catch(e : any){
+        return {err: `${e.message} `}
+    }
+
+}
+
+export async function stripeAccountDashboard(){
+    const session = await getServerSession();
+    if(!session || !session.user || !session.user.email){
+        return {err:"Session failed : login first "};
+    }
+    const user = await prisma.user.findUnique({
+        where: {
+            email: session.user.email
+        },
+        select : {
+            stripeId: true
+        }
+    });
+    if(!user){
+        return {err:"User not found : login first "};
+    }
+    if(!user.stripeId){
+        return {err:"Stripe ID not added "};
+    }
+    try{
+        const loginLink = await stripe.accounts.createLoginLink(user.stripeId);
+        return {err: null, loginLink: loginLink.url}
+    }catch(e : any){
+        return {err: `${e.message} `}
+    }
+}

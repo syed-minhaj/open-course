@@ -8,7 +8,7 @@ import { useState  } from "react";
 import NameComponent from "./profile/NameComponent";
 import BioComponent from "./profile/BioComponent";
 import ImageComponent from "./profile/ImageComponent";
-
+import StripeAccountComponent from "./profile/StripeAccountComponent";
 
 const Profile = ({user , admin , id} : {user: adminUser | nonAdminUser, admin: boolean, id: string}) => {
     
@@ -22,6 +22,7 @@ const Profile = ({user , admin , id} : {user: adminUser | nonAdminUser, admin: b
                 </div>
                 <div className="h-fit w-fit flex-1 rounded-lg  " >
                     <NameComponent user={user} admin={admin} />
+                    <StripeAccountComponent user={user} admin={admin} />
                 </div>
             </div>
             <div className="pt-5">
