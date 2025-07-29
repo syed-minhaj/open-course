@@ -8,6 +8,7 @@ type nonAdminUser = {
 type adminUser = nonAdminUser & {
     email: string;
     wallet: number;
+    stripeId: string | null;
 }
 type module_created = {
     indexInCourse : number,
