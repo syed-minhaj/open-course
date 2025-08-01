@@ -2,6 +2,7 @@
 
 import { SquareArrowOutUpRight } from 'lucide-react';
 import { useState, useRef, useEffect } from 'react';
+import Image from "next/image";
 
 type Course = {
     id : string,
@@ -100,7 +101,7 @@ const Discover = ({courses}:{courses: Course[] }) => {
                         style={{ transform: `translateX(-${currentIndex * 100}%)` }} >
                             {courses.map((course) => (
                                 <div key={course.id} className="w-full flex-shrink-0 relative">
-                                    <img src={course.image} alt={course.name} className="w-full h-full object-cover" />
+                                    <Image src={course.image} alt={course.name} className="w-full h-full object-cover" fill />
                                     <div className="absolute bottom-10 left-6  text-gray-100  z-10">
                                         {course.name}
                                         <a href={`/course/${course.id}`} >
