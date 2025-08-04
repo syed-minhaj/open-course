@@ -39,7 +39,7 @@ const CourseSection = async({userID}:{userID:string}) => {
     }
     
     return (
-        <div className=" grid grid-cols-1 md:grid-cols-3 xl:grid-cols-4 gap-2 mt-4 ">
+        <div className=" grid grid-cols-1 md:grid-cols-3 xl:grid-cols-4 gap-6 mt-4 ">
             
             {user.cartItems.map(async (cartItem : Course , index : number)=>{
                 const courseOwner = await getCourseOwner(cartItem.id);

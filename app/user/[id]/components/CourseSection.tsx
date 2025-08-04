@@ -34,12 +34,12 @@ const CourseSection = async({userID, admin } : {userID: string, admin: boolean})
     
     const course = await getCourse(userID);
     return(
-        <div className="w-full min-h-36 flex flex-col gap-2 ">
+        <div className="w-full min-h-36 flex flex-col gap-5 ">
             {admin ? 
                 <Create userID={userID} admin={admin} />
             : null
             }
-            <div className="w-full min-h-48 grid grid-cols-1 md:grid-cols-3 xl:grid-cols-4 gap-2  ">
+            <div className="w-full min-h-48 grid grid-cols-1 md:grid-cols-3 xl:grid-cols-4 gap-6  ">
                 {course.map(async (course , index  )=>{
                     const courseOwner = await getCourseOwner(course.id);
                     function isOwner(){

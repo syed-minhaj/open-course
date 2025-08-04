@@ -5,7 +5,7 @@ import PageChanger from "../../components/PageChnager"
 
 const getCoursesByBuyers = async(page : string | undefined , query : string | undefined , userID : string) => {
   const pageNumber = (page ? Number(page) : 1) || 3;
-  console.log(pageNumber);
+  //console.log(pageNumber);
   const courses = await prisma.user.findFirst({
     where: {
         id : userID,
@@ -76,7 +76,7 @@ const CourseSection = async({page , query , userID}:{ page:string | undefined , 
     const total = await getTotal(query);
     return (
         <>
-            <div className=" grid grid-cols-1 md:grid-cols-3 xl:grid-cols-4 gap-2 mt-4 ">
+            <div className=" grid grid-cols-1 md:grid-cols-3 xl:grid-cols-4 gap-6 mt-4 ">
                 
                 {course.map(async (course : Course , index : number)=>{
                     return(

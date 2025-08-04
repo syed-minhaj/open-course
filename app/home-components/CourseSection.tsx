@@ -102,7 +102,7 @@ const CourseSection = async({page , query , userID}:{ page:string | undefined , 
     const total = await getTotal(query);
     return (
         <>
-            <div className=" grid grid-cols-1 md:grid-cols-3 xl:grid-cols-4 gap-2 mt-4 ">
+            <div className=" grid grid-cols-1 md:grid-cols-3 xl:grid-cols-4 gap-6 mt-4 ">
                 {!query && (!page || (Number(page) == 1)) ?
                     <Discover courses={await getfeaturedCourses()} />
                 : null }
