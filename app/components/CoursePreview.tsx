@@ -25,9 +25,9 @@ const CoursePreviw = ({course, owner } : {course: Course, index: number, owner: 
                     }
                 </div>
             </div>
-            <div className="flex flex-col justify-start flex-1 gap-1 text-secondary md:px-2 ">
+            <div className="flex flex-col justify-start flex-1 gap-2 text-secondary md:px-2 ">
                 <h2 className=" font-bold text-xl   ">{course.name}</h2>
-                <p className="h-32 md:h-auto max-h-32 min-h-24 overflow-y-clip font-light text-sm opacity-65 ">
+                <p className="h-16 mb-3 overflow-y-clip font-light text-sm opacity-65 ">
                     {course.description}
                 </p>
                 <div className="md:hidden p-1 bg-gray-400 bg-opacity-20 rounded-md flex flex-row items-center 
