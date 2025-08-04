@@ -13,28 +13,31 @@ const Navbar = async({userImage , userID , search } : {userImage : string | unde
         <h1 className="font-bold text-tertiary grid place-items-center">
             <Link href={'/'}>OpenCourse</Link>
         </h1>
-        <div className="w-1/2 ml-auto flex flex-row gap-2 ">
+        <div className="lg:w-1/2 w-3/4 ml-auto flex flex-row gap-4 ">
             {search ?
               <div className="hidden md:flex flex-row flex-1 ">
                 <Search />
               </div>
             : null}
-            <div className="ml-auto flex flex-row gap-2 ">
+            <div className="ml-auto flex flex-row gap-4 ">
 
               {userID ? 
                 <>
-                  <Link href={`/user/${userID}`} className="ml-auto h-full grid place-items-center">
-                    <Store size={28} className="text-tertiary " />
+                  <Link href={`/user/${userID}`} className="ml-auto h-full hidden sm:grid place-items-center grid-flow-col gap-1 hover:opacity-65">
+                    <Store size={20} className="text-tertiary " />
+                    <span className="text-sm text-tertiary ">Store</span>
                   </Link>
-                  <Link href={`/bucket`} className="h-full grid place-items-center">
-                    <ShoppingCart size={28} className="text-tertiary my-auto" />
+                  <Link href={`/bucket`} className="h-full hidden sm:grid place-items-center grid-flow-col gap-1 hover:opacity-65">
+                    <ShoppingCart size={20} className="text-tertiary my-auto" />
+                    <span className="text-sm text-tertiary ">Bucket</span>
                   </Link>
-                  <Link href={`/inventory`} className="h-full grid place-items-center">
-                    <ShoppingBag size={28} className="text-tertiary my-auto" />
+                  <Link href={`/inventory`} className="h-full hidden sm:grid place-items-center grid-flow-col gap-1 hover:opacity-65">
+                    <ShoppingBag size={20} className="text-tertiary my-auto" />
+                    <span className="text-sm text-tertiary ">Inventory</span>
                   </Link>
                 </>
               : null}
-              <UserIco userImage={userImage }/>
+              <UserIco userImage={userImage } userID={userID}/>
             </div>
         </div>
       </div>
