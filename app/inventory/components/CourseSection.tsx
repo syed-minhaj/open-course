@@ -81,7 +81,7 @@ const CourseSection = async({page , query , userID}:{ page:string | undefined , 
                 {course.map(async (course : Course , index : number)=>{
                     return(
                         <div key={course.id} className="">
-                            <CoursePreview course={course} index={index} owner={true}  />
+                            <CoursePreview course={course} index={index}  />
                         </div>
                     )
                 })}

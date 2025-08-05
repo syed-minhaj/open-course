@@ -4,7 +4,7 @@ import { Package } from "lucide-react";
 import BuyCourse from "./Button/BuyCourse";
 import Image from "next/image"
 
-const CoursePreviw = ({course, owner } : {course: Course, index: number, owner: boolean }) => {
+const CoursePreviw = ({course } : {course: Course, index: number}) => {
     return(
         <Link href={`/course/${course.id}`}>
             <div  className="max-h-fit flex flex-row-reverse md:flex-col gap-2 overflow-hidden p-2 md:p-0 

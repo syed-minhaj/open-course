@@ -61,21 +61,6 @@ const getTotal = async(query : string | undefined) => {
   return total;
 }
 
-const getCourseOwner = async(id : string) => {
-    return await prisma.course.findUnique({
-        where: {
-            id: id
-        },
-        select: {
-            buyers:{
-                select:{
-                    id: true,
-                }
-            }
-        }
-    })
-}
-
 const getfeaturedCourses = async() => {
   return await prisma.course.findMany({
     where: {
@@ -111,19 +96,9 @@ const CourseSection = async({page , query , userID}:{ page:string | undefined , 
                     <Discover courses={featuredCourse} />
                 : null }
                 {course.map(async (course : Course , index : number)=>{
-                    const courseOwner = await getCourseOwner(course.id);
-                    function isOwner(){
-                      if(userID === course.creatorId){
-                        return true;
-                      }else if(courseOwner && courseOwner.buyers.some(buyer => buyer.id === userID)){
-                        return true;
-                      }else{
-                        return false;
-                      }
-                    }
                     return(
                         <div key={course.id} className="">
-                            <CoursePreview course={course} index={index} owner={isOwner()}  />
+                            <CoursePreview course={course} index={index}   />
                         </div>
                     )
                 })}
