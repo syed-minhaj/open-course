@@ -14,7 +14,7 @@ const Card = ({user} : {user : userType}) => {
                 <img className="w-20 mt-2" src="/Stripe_Inc_logo.svg" alt="Stripe logo" />
             </div>
             <h1 className="text-xl  text-secondary my-2  ">
-                Create Stripe Account
+                Create Stripe (test) Account
             </h1>
             <img className=" aspect-[1/1] rounded-full h-28 border-2 mt-5 
             border-[rgba(34,211,238,0.6)]" src={user?.image} alt="Stripe logo" /> 
