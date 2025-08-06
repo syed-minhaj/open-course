@@ -5,6 +5,7 @@ import { DeleteCourse } from "@/app/actions/course";
 import OrderSection from "./components/OrderSection";
 import { useState } from "react";
 import { revalidatePath_fromClient } from "@/app/actions/actions";
+import { Loader2Icon } from "lucide-react"
 
 type course = {
     id: string,
@@ -27,7 +28,7 @@ const Hero = ({owned ,  course , inCart , admin} : {owned : boolean , course : c
                 alert(`${res.err}`)
                 return;
             }
-            alert(`${course.name} deleted `);
+            alert(`${course.name} deleted , will be removed from home page in few minutes`);
             revalidatePath_fromClient(document.referrer);
             window.history.back();
         })
@@ -48,7 +49,8 @@ const Hero = ({owned ,  course , inCart , admin} : {owned : boolean , course : c
                 {admin ? 
                     <button onClick={deleteCourse} disabled={deleting}
                             className=" bg-red-600 bg-opacity-10 hover:bg-opacity-25 text-red-600 border 
-                                        border-red-600 p-1 px-2 rounded-lg disabled:opacity-50 my-2 "> 
+                                        border-red-600 p-1 px-2 rounded-lg disabled:opacity-50 my-2 flex flex-row"> 
+                        {deleting ? <Loader2Icon className="animate-spin  mr-1" /> : null}
                         Remove Coures 
                     </button>
                 : null }

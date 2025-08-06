@@ -3,6 +3,7 @@ import { BuyCourse as BuyCourseFunc } from "@/app/actions/course";
 import { useState } from "react";
 import { usePathname } from "next/navigation";
 import { revalidatePath_fromClient } from "@/app/actions/actions";
+import { Loader2Icon } from "lucide-react"
 
 const BuyCourse = ({courseID , coursePrice} : {courseID : string , coursePrice : number}) => {
 
@@ -28,6 +29,7 @@ const BuyCourse = ({courseID , coursePrice} : {courseID : string , coursePrice :
     return (
         <button onClick={buy} disabled={buying}
              className="bg-accent p-1 rounded-md text-[--color-primary] disabled:opacity-50 ">
+            {buying ? <Loader2Icon className="animate-spin  mr-1" /> : null}
             {coursePrice == 0 ? "Free" : "$"+coursePrice}
         </button>
     )

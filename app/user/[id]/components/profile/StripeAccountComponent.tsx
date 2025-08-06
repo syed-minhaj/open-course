@@ -9,7 +9,7 @@ const StripeAccountComponent = ({user, admin} : {user: adminUser | nonAdminUser,
     }
     const accountExists = (user as adminUser).stripeId != null;
     return (
-        <div className="mt-2">{
+        <div className="mt-2 flex flex-row">{
             accountExists ? 
             <EditStripeAccountComponent  />
             :

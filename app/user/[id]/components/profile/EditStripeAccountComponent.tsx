@@ -1,15 +1,17 @@
 "use client";
 import {stripeAccountDashboard , editStripeAccount} from "@/app/actions/actions";
 import { useState } from "react";
+import { Loader2Icon } from "lucide-react"
 
 const EditStripeAccountComponent = () => {
-    const [loading , setLoading] = useState(false);
+    const [loadingDashboard , setLoadingDashboard] = useState(false);
+    const [loadingEditStripe , setLoadingEditStripe] = useState(false);
     const Dashboard =  () => {
-        setLoading(true);
+        setLoadingDashboard(true);
         stripeAccountDashboard().then((res)=>{
             if(res.err){
                 alert(res.err);
-                setLoading(false);
+                setLoadingDashboard(false);
                 return;
             }
             if(res.loginLink){
@@ -18,11 +20,11 @@ const EditStripeAccountComponent = () => {
         });
     }
     const editStripe =  () => {
-        setLoading(true);
+        setLoadingEditStripe(true);
         editStripeAccount().then((res)=>{
             if(res.err){
                 alert(res.err);
-                setLoading(false);
+                setLoadingEditStripe(false);
                 return;
             }
             if(res.updateLink){
@@ -32,12 +34,14 @@ const EditStripeAccountComponent = () => {
     }
     return (
         <>
-            <button onClick={Dashboard} disabled={loading} className="bg-secondary p-[6px] mr-2
-            rounded-md dark:text-gray-700 text-gray-200 text-sm disabled:opacity-60 ">
+            <button onClick={Dashboard} disabled={loadingDashboard || loadingEditStripe} className="bg-secondary p-[6px] mr-2
+            rounded-md dark:text-gray-700 text-gray-200 text-sm disabled:opacity-60 flex flex-row items-center ">
+                {loadingDashboard ? <Loader2Icon className="animate-spin  mr-1" /> : null}
                 Stripe Account Dashboard
             </button>
-            <button onClick={editStripe} disabled={loading} className="bg-secondary p-[6px] 
-            rounded-md dark:text-gray-700 text-gray-200 text-sm disabled:opacity-60 ">
+            <button onClick={editStripe} disabled={loadingDashboard || loadingEditStripe} className="bg-secondary p-[6px] 
+            rounded-md dark:text-gray-700 text-gray-200 text-sm disabled:opacity-60 flex flex-row items-center ">
+                {loadingEditStripe ? <Loader2Icon className="animate-spin  mr-1" /> : null}
                 Edit Stripe Account
             </button>
         </>

@@ -4,6 +4,7 @@ import { BuyCourse } from "@/app/actions/course";
 import { AddToCart , RemoveFromCart } from "@/app/actions/course";
 import { useState } from "react";
 import { revalidatePath_fromClient } from "@/app/actions/actions";
+import { Loader2Icon } from "lucide-react"
 
 const OrderSection = ({courseID , coursePrice , inCart} : {courseID : string , coursePrice : number , inCart : boolean}) => {
 
@@ -49,11 +50,13 @@ const OrderSection = ({courseID , coursePrice , inCart} : {courseID : string , c
     return(
             <div className="flex gap-2 flex-col sm:flex-row sm:w-fit font-semibold mt-5 ">
                 <button onClick={Buy} disabled={buying}
-                className="p-2 rounded-lg bg-accent text-[--color-primary] min-w-[91] disabled:opacity-45 "> 
+                className="p-2 rounded-lg bg-accent flex flex-row justify-center text-[--color-primary] min-w-[91] disabled:opacity-45 "> 
+                    {buying ? <Loader2Icon className="animate-spin  mr-1" /> : null}
                     { coursePrice == 0 ? 'Free' : '$'+coursePrice }
                 </button>
                 <button onClick={OnCartClick} disabled={disableCart}
                 className="p-2 rounded-lg border border-accent flex flex-row justify-center min-w-[91] disabled:opacity-45 "> 
+                    {disableCart ? <Loader2Icon className="animate-spin  mr-1" /> : null}
                     <ShoppingCart />
                     {inCart ?
                         " Remove"
