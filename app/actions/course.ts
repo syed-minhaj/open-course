@@ -125,7 +125,7 @@ export async function BuyCourse(courseID : string ){
 }
 
 async function BuyCourse_Payment({course , userEmail } : {course : CourseTypeForPayment , userEmail : string}){
-    console.log(course.creator.stripeId)
+    
     if(!course.creator.stripeId){
         return {err: "course not available"}
     }
