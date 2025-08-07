@@ -5,6 +5,8 @@ import { AddToCart , RemoveFromCart } from "@/app/actions/course";
 import { useState } from "react";
 import { revalidatePath_fromClient } from "@/app/actions/actions";
 import { Loader2Icon } from "lucide-react"
+import { confirmAlert } from "react-confirm-alert";
+import 'react-confirm-alert/src/react-confirm-alert.css';
 
 const OrderSection = ({courseID , coursePrice , inCart} : {courseID : string , coursePrice : number , inCart : boolean}) => {
 
@@ -13,10 +15,6 @@ const OrderSection = ({courseID , coursePrice , inCart} : {courseID : string , c
 
     function Buy(){
             setBuying(true);
-            if(!confirm("Are you sure you want to buy this course?")){
-                setBuying(false);
-                return;
-            }
             BuyCourse(courseID).then((res)=>{
                 if(res.err){
                     alert(res.err);
@@ -28,6 +26,24 @@ const OrderSection = ({courseID , coursePrice , inCart} : {courseID : string , c
                 }
                 revalidatePath_fromClient(`/course/${courseID}`);
             })
+    }
+
+    function confirmBuy(){
+        confirmAlert({
+          title: 'Buy Course',
+          message: 'Are you sure you want to buy this course?',
+          buttons: [
+            {
+              label: 'Yes',
+              onClick: () => Buy(),
+            },
+            {
+              label: 'No',
+              onClick: () => {},
+              style: {backgroundColor: 'rgba(0,0,0,0)' , color: 'rgb(51, 51, 51)' , border: '1px solid rgb(51, 51, 51)' }
+            }
+          ]
+        });
     }
 
     function OnCartClick(){
@@ -49,7 +65,7 @@ const OrderSection = ({courseID , coursePrice , inCart} : {courseID : string , c
 
     return(
             <div className="flex gap-2 flex-col sm:flex-row sm:w-fit font-semibold mt-5 ">
-                <button onClick={Buy} disabled={buying}
+                <button onClick={confirmBuy} disabled={buying}
                 className="p-2 rounded-lg bg-accent flex flex-row justify-center text-[--color-primary] min-w-[91] disabled:opacity-45 "> 
                     {buying ? <Loader2Icon className="animate-spin  mr-1" /> : null}
                     { coursePrice == 0 ? 'Free' : '$'+coursePrice }

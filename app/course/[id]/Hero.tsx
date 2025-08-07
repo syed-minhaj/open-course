@@ -6,6 +6,8 @@ import OrderSection from "./components/OrderSection";
 import { useState } from "react";
 import { revalidatePath_fromClient } from "@/app/actions/actions";
 import { Loader2Icon } from "lucide-react"
+import { confirmAlert } from "react-confirm-alert";
+import 'react-confirm-alert/src/react-confirm-alert.css';
 
 type course = {
     id: string,
@@ -19,9 +21,6 @@ const Hero = ({owned ,  course , inCart , admin} : {owned : boolean , course : c
 
     const [deleting , setDeleting] = useState(false);
     function deleteCourse(){
-        if(!confirm("Are you sure you want to delete this course?")){
-            return;
-        }
         setDeleting(true);
         DeleteCourse(course.id).then((res)=>{
             if(res.err){
@@ -32,6 +31,25 @@ const Hero = ({owned ,  course , inCart , admin} : {owned : boolean , course : c
             revalidatePath_fromClient(document.referrer);
             window.history.back();
         })
+    }
+
+    function confirmDelete(){
+        confirmAlert({
+          title: 'Delete Course?',
+          message: 'Are you sure you want to delete this course?',
+          overlayClassName : "overlay-custom-class-name",
+          buttons: [
+            {
+              label: 'Yes',
+              onClick: () => deleteCourse(),
+              style: {backgroundColor: 'rgb(220,38,38)' }
+            },
+            {
+              label: 'No',
+              onClick: () => {}
+            }
+          ]
+        });
     }
 
     return(
@@ -47,7 +65,7 @@ const Hero = ({owned ,  course , inCart , admin} : {owned : boolean , course : c
                     <OrderSection courseID={course.id} coursePrice={course.price} inCart={inCart} />
                 : null }
                 {admin ? 
-                    <button onClick={deleteCourse} disabled={deleting}
+                    <button onClick={confirmDelete} disabled={deleting}
                             className=" bg-red-600 bg-opacity-10 hover:bg-opacity-25 text-red-600 border 
                                         border-red-600 p-1 px-2 rounded-lg disabled:opacity-50 my-2 flex flex-row"> 
                         {deleting ? <Loader2Icon className="animate-spin  mr-1" /> : null}
