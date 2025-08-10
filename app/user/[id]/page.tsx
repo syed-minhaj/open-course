@@ -8,6 +8,7 @@ import { adminUser, nonAdminUser } from "@/app/types";
 import Profile from "./components/Profile";
 import { Course  } from "@/app/types";
 import dynamic from "next/dynamic";
+import { getImageFromStorage } from "@/app/actions/image";
 
 const CourseSection = dynamic(() => import("./components/CourseSection"), {
     loading: () => <div className="h-[202px] animate-pulse flex flex-row-reverse md:flex-col gap-2 w-full 
@@ -15,11 +16,14 @@ const CourseSection = dynamic(() => import("./components/CourseSection"), {
 });
 
 const getUser = async(id: string) : Promise<adminUser | null> => {
-    return await  prisma.user.findUnique({
+    const user = await  prisma.user.findUnique({
         where: {
             id: id
         }
     })
+    if(!user){return null}
+    user.image = await getImageFromStorage(user.image);
+    return user;
 }
 
 
@@ -40,6 +44,7 @@ const Viewer = async(email : string | undefined | null) => {
     if(!user){
         redirect('/')
     }
+    user.image = await getImageFromStorage(user.image);
     return user;
 }
 

@@ -55,6 +55,8 @@ const getUserByEmail = async(email :string | null | undefined) => {
             image : true
         }
     })
+    if(!user){return null}
+    user.image = await getImageFromStorage(user.image);
     return user;
 }
 

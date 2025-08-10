@@ -4,6 +4,7 @@ import { prisma } from "@/app/lib/prisma";
 import Navbar from "./components/Navbar";
 import RemoveSearch from "./components/RemoveSearch";
 import dynamic from "next/dynamic";
+import { getImageFromStorage } from "./actions/image";
 
 const CourseSection = dynamic (() => import("./home-components/CourseSection") , {
         loading: () => <div className="h-[202px] animate-pulse flex flex-row-reverse md:flex-col gap-2 w-full mt-4 
@@ -11,7 +12,7 @@ const CourseSection = dynamic (() => import("./home-components/CourseSection") ,
 })
 
 const getUserByEmail = async (email:string) => {
-  return await  prisma.user.findUnique({
+  const user = await  prisma.user.findUnique({
     where: {
       email: email
     },
@@ -20,6 +21,9 @@ const getUserByEmail = async (email:string) => {
       image: true
     },
   })
+  if(!user){return null}
+  user.image = await getImageFromStorage(user.image);
+  return user;
 }
 
 export default async function Home({searchParams}:any) {

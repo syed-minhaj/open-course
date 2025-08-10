@@ -3,6 +3,7 @@ import { prisma } from "@/app/lib/prisma";
 import { getServerSession } from "next-auth";
 import { redirect } from "next/navigation";
 import Card from "./components/Card";
+import { getImageFromStorage } from "../actions/image";
 
 const getUserByEmail = async(email :string ) => {    
     const user = await prisma.user.findUnique({
@@ -15,6 +16,8 @@ const getUserByEmail = async(email :string ) => {
             name : true
         }
     })
+    if(!user){return null}
+    user.image = await getImageFromStorage(user.image);
     return user;
 }
 

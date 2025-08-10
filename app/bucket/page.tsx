@@ -3,9 +3,10 @@ import { getServerSession } from "next-auth";
 import { redirect } from "next/navigation";
 import Navbar from "../components/Navbar";
 import CourseSection from "./components/CourseSection";
+import { getImageFromStorage } from "../actions/image";
 
 const getUserByEmail = async (email:string) => {
-  return await  prisma.user.findUnique({
+  const user = await  prisma.user.findUnique({
     where: {
       email: email
     },
@@ -14,6 +15,9 @@ const getUserByEmail = async (email:string) => {
       image: true,
     }
   })
+  if(!user){return null}
+  user.image = await getImageFromStorage(user.image);
+  return user;
 }
 
 export const metadata = {
