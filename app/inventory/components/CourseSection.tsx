@@ -2,6 +2,7 @@ import CoursePreview from "../../components/CoursePreview"
 import { prisma } from "@/app/lib/prisma"
 import { Course } from "../../types"
 import PageChanger from "../../components/PageChnager"
+import { getImageFromStorage } from "@/app/actions/image"
 
 const getCoursesByBuyers = async(page : string | undefined , query : string | undefined , userID : string) => {
   const pageNumber = (page ? Number(page) : 1) || 3;
@@ -40,9 +41,10 @@ const getCoursesByBuyers = async(page : string | undefined , query : string | un
     },
   })
   if (!courses){ return [] }
-  courses.purchasedCourses.forEach((course : Course) => {
+  await Promise.all(courses.purchasedCourses.map(async(course : Course) => {
     course.modulesCount = course.modules.length;
-  })
+    course.image = await getImageFromStorage(course.image);
+  }))
   return courses.purchasedCourses;
 }
 

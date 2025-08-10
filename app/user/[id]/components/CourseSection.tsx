@@ -3,9 +3,10 @@ import { Course} from "@/app/types";
 import CoursePreview from "@/app/components/CoursePreview";
 import Create from "./courseSection/Create";
 import { prisma } from "@/app/lib/prisma";
+import { getImageFromStorage } from "@/app/actions/image";
 
 const getCourse = async(id: string) : Promise<Course[]> => {
-    return await  prisma.course.findMany({
+    const courses = await  prisma.course.findMany({
             where: {
                 creatorId: id
             },
@@ -13,6 +14,11 @@ const getCourse = async(id: string) : Promise<Course[]> => {
                 modules: true
             }
         })
+
+    await Promise.all(courses.map(async(course : Course) => {
+        course.image = await getImageFromStorage(course.image);
+    }))
+    return courses;
 }
 
 

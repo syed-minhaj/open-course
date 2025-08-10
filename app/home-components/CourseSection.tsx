@@ -3,6 +3,7 @@ import { prisma } from "../lib/prisma"
 import { Course } from "../types"
 import PageChanger from "../components/PageChnager"
 import Discover from "./Discover"
+import { getImageFromStorage } from "../actions/image"
 
 const coursesperPage = 8;
 const getCourses = async(page : string | undefined , query : string | undefined) => {
@@ -33,9 +34,10 @@ const getCourses = async(page : string | undefined , query : string | undefined)
       modules: true
     },
   })
-  courses.forEach((course : Course) => {
+  await Promise.all(courses.map(async(course : Course) => {
     course.modulesCount = course.modules.length;
-  })
+    course.image = await getImageFromStorage(course.image);
+  }))
   return courses;
 }
 

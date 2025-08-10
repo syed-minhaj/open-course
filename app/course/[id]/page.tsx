@@ -6,6 +6,7 @@ import { getServerSession } from "next-auth";
 import { redirect } from "next/navigation";
 import Hero from "./Hero";
 import ModulesSection from "./ModulesSection";
+import { getImageFromStorage } from "@/app/actions/image";
 
 type Course = CourseType & {
     buyers : {id : string}[]
@@ -35,6 +36,8 @@ const getCourseById = async(id:string) => {
             }
         }
     })
+    if(!course){return null}
+    course.image = await getImageFromStorage(course.image);
     return course;
 }
 

@@ -1,9 +1,10 @@
 import { prisma } from "@/app/lib/prisma";
 import { Course } from "@/app/types";
 import CoursePreview from "../../components/CoursePreview"
+import { getImageFromStorage } from "@/app/actions/image";
 
 const getCourses = async(userID : string) => {
-    return await prisma.user.findUnique({
+    const courses = await prisma.user.findUnique({
         where: {
             id: userID
         },
@@ -15,6 +16,11 @@ const getCourses = async(userID : string) => {
             }
         }
     })
+    if(!courses){return null}
+    await Promise.all(courses.cartItems.map(async(course : Course) => {
+        course.image = await getImageFromStorage(course.image);
+    }))
+    return courses;
 }
 
 
