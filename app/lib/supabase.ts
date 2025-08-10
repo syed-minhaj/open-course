@@ -6,8 +6,13 @@ const supabase = createClient(
     {
       auth: {
         persistSession: false,
-      }
-    }
+      },
+      global: {
+        headers: {
+          'x-api-key': process.env.SUPABASE_BUCKET_API_KEY ?? " ",
+        },
+      },
+    },
 );
 
 export {supabase};
