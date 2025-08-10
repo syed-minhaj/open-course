@@ -1,6 +1,6 @@
 
 import { prisma } from "@/app/lib/prisma";
-import { Course as CourseType  } from "@/app/types";
+import { Course as CourseType , module } from "@/app/types";
 import Navbar from "@/app/components/Navbar";
 import { getServerSession } from "next-auth";
 import { redirect } from "next/navigation";
@@ -38,6 +38,9 @@ const getCourseById = async(id:string) => {
     })
     if(!course){return null}
     course.image = await getImageFromStorage(course.image);
+    await Promise.all(course.modules.map(async(module : module) => {
+        if(module.image){ module.image = await getImageFromStorage(module.image);}
+    }))
     return course;
 }
 
