@@ -4,8 +4,11 @@ import { Course } from "../../types"
 import PageChanger from "../../components/PageChnager"
 import { getImageFromStorage } from "@/app/actions/image"
 
+
+const coursesperPage = 8;
+
 const getCoursesByBuyers = async(page : string | undefined , query : string | undefined , userID : string) => {
-  const pageNumber = (page ? Number(page) : 1) || 3;
+  const pageNumber = (page ? Number(page) : 1) ;
   
   const courses = await prisma.user.findFirst({
     where: {
@@ -44,26 +47,36 @@ const getCoursesByBuyers = async(page : string | undefined , query : string | un
   return courses.purchasedCourses;
 }
 
-const getTotal = async(query : string | undefined) => {
-  const total = await prisma.course.count({
-    where: query ? {
-      OR: [
-        {
-          name: {
-            contains: query,
-            mode: 'insensitive'
-          }
-        },
-        {
-          description: {
-            contains: query,
-            mode: 'insensitive'
-          }
+const getTotal = async(query : string | undefined , userID : string , page : string | undefined) => {
+  const pageNumber = (page ? Number(page) : 1) ;
+  const total = await prisma.user.findFirst({
+    where: {
+        id : userID,
+    },
+    select: {
+        purchasedCourses: {
+            select : {id : true},
+            where: query ? {
+                OR: [
+                    {
+                        name: {
+                        contains: query,
+                        mode: 'insensitive'
+                        }
+                    },
+                    {
+                        description: {
+                        contains: query,
+                        mode: 'insensitive'
+                        }
+                    }
+                ]
+            } : undefined,
         }
-      ]
-    } : undefined,
-  });
-  return total;
+    },
+  })
+  if (!total){ return 0 }
+  return total.purchasedCourses.length;
 }
 
 
@@ -71,7 +84,7 @@ const getTotal = async(query : string | undefined) => {
 const CourseSection = async({page , query , userID}:{ page:string | undefined , query:string | undefined , userID:string  }) => {
 
     const course = await getCoursesByBuyers(page , query , userID);
-    const total = await getTotal(query);
+    const total = await getTotal(query , userID , page);
     return (
         <>
             <div className=" grid grid-cols-1 md:grid-cols-3 xl:grid-cols-4 gap-6 mt-4 ">
@@ -84,7 +97,7 @@ const CourseSection = async({page , query , userID}:{ page:string | undefined , 
                     )
                 })}
             </div>
-            <PageChanger currentPage={Number(page ?? 1)} totalPages={10} />
+            <PageChanger currentPage={Number(page ?? 1)} totalPages={Math.ceil(total / coursesperPage)} />
         </>
     )
 }
