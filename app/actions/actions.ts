@@ -131,6 +131,20 @@ export async function createCourse (course :Course) {
 
         }
     })
+
+    await Promise.all(course.modules.map(async (module : module) => {
+        await createModule(module, courseData.id , course.creatorId);
+    }))
+
+    await prisma.course.update({
+        where: {
+            id: courseData.id
+        },
+        data: {
+            modulesCount: course.modules.length
+        }
+    })
+    
     return { course_id:courseData.id , creator_id: course.creatorId };
 }
 export const createModule = async (module : module , courseId : string , creatorId : string) => {

@@ -90,13 +90,10 @@ const CreationWindow = ({userID, admin , setWindowOpen} : {userID: string , admi
                 price: price,
             };
             setIsCreating(`Creating ${course.name} ...`);
-            const res = await createCourse({...course, modules: []});
+            const res = await createCourse(course);
             if (res){
                 const {course_id, creator_id} = res;
                 if(!course_id || !creator_id){return}
-                await Promise.all(course.modules.map(async (module : module) => {
-                    await createModule(module, course_id ,creator_id);
-                }))
                 revalidatePath_fromClient(`/user/${creator_id}`)
                 setIsCreating(false);
                 setWindowOpen(false);
