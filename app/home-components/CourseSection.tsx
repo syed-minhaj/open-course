@@ -84,13 +84,11 @@ const getfeaturedCourses = async() => {
 }
 
 const featuredCourse = await getfeaturedCourses();
-const firstPageCourse = await getCourses(undefined , undefined);
-const totalWithoutQuery = await getTotal(undefined);
 
-const CourseSection = async({page , query , userID}:{ page:string | undefined , query:string | undefined , userID:string | undefined }) => {
+const CourseSection = async({page , query }:{ page:string | undefined , query:string | undefined  }) => {
 
-    const course = (!query && (!page || page == '1')) ? firstPageCourse : await getCourses(page , query);
-    const total = !query ? totalWithoutQuery : await getTotal(query);
+    const course =  await getCourses(page , query);
+    const total =  await getTotal(query);
     return (
         <>
             <div className=" grid grid-cols-1 md:grid-cols-3 xl:grid-cols-4 gap-6 mt-4 ">

@@ -27,7 +27,7 @@ const Hero = ({owned ,  course , inCart , admin} : {owned : boolean , course : c
                 alert(`${res.err}`)
                 return;
             }
-            alert(`${course.name} deleted , will be removed from home page in few minutes`);
+            alert(`${course.name} deleted `);
             revalidatePath_fromClient(document.referrer);
             window.history.back();
         })
