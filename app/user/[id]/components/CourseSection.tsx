@@ -5,17 +5,14 @@ import Create from "./courseSection/Create";
 import { prisma } from "@/app/lib/prisma";
 import { getImageFromStorage } from "@/app/actions/image";
 
-const getCourse = async(id: string) : Promise<Course[]> => {
+const getCourse = async(id: string) : Promise<Omit<Course , "modules">[]> => {
     const courses = await  prisma.course.findMany({
             where: {
                 creatorId: id
             },
-            include:{
-                modules: true
-            }
         })
 
-    await Promise.all(courses.map(async(course : Course) => {
+    await Promise.all(courses.map(async(course : Omit<Course , "modules">) => {
         course.image = await getImageFromStorage(course.image);
     }))
     return courses;

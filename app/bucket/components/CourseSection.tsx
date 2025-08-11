@@ -9,15 +9,11 @@ const getCourses = async(userID : string) => {
             id: userID
         },
         include: {
-            cartItems: {
-                include: {
-                    modules: true,
-                }
-            }
+            cartItems: true
         }
     })
     if(!courses){return null}
-    await Promise.all(courses.cartItems.map(async(course : Course) => {
+    await Promise.all(courses.cartItems.map(async(course : Omit<Course , "modules">) => {
         course.image = await getImageFromStorage(course.image);
     }))
     return courses;
@@ -34,7 +30,7 @@ const CourseSection = async({userID}:{userID:string}) => {
     return (
         <div className=" grid grid-cols-1 md:grid-cols-3 xl:grid-cols-4 gap-6 mt-4 ">
             
-            {user.cartItems.map(async (cartItem : Course , index : number)=>{
+            {user.cartItems.map(async (cartItem : Omit<Course , "modules"> , index : number)=>{
                 return(
                     <div key={cartItem.id} className="">
                         <CoursePreview course={cartItem} index={index}   />

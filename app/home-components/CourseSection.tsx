@@ -30,12 +30,8 @@ const getCourses = async(page : string | undefined , query : string | undefined)
     },
     skip: (pageNumber - 1) * coursesperPage,
     take: coursesperPage,
-    include:{
-      modules: true
-    },
   })
-  await Promise.all(courses.map(async(course : Course) => {
-    course.modulesCount = course.modules.length;
+  await Promise.all(courses.map(async(course : Omit<Course , "modules">) => {
     course.image = await getImageFromStorage(course.image);
   }))
   return courses;
@@ -95,7 +91,7 @@ const CourseSection = async({page , query }:{ page:string | undefined , query:st
                 {!query && (!page || (Number(page) == 1)) ?
                     <Discover courses={featuredCourse} />
                 : null }
-                {course.map(async (course : Course , index : number)=>{
+                {course.map(async (course : Omit<Course , "modules"> , index : number)=>{
                     return(
                         <div key={course.id} className="">
                             <CoursePreview course={course} index={index}   />

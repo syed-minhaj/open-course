@@ -6,7 +6,7 @@ import { getImageFromStorage } from "@/app/actions/image"
 
 const getCoursesByBuyers = async(page : string | undefined , query : string | undefined , userID : string) => {
   const pageNumber = (page ? Number(page) : 1) || 3;
-  //console.log(pageNumber);
+  
   const courses = await prisma.user.findFirst({
     where: {
         id : userID,
@@ -29,9 +29,6 @@ const getCoursesByBuyers = async(page : string | undefined , query : string | un
                     }
                 ]
             } : undefined,
-            include: {
-                modules: true,
-            },
             orderBy: {
               avgRating: 'desc'
             },
@@ -41,8 +38,7 @@ const getCoursesByBuyers = async(page : string | undefined , query : string | un
     },
   })
   if (!courses){ return [] }
-  await Promise.all(courses.purchasedCourses.map(async(course : Course) => {
-    course.modulesCount = course.modules.length;
+  await Promise.all(courses.purchasedCourses.map(async(course : Omit<Course , "modules">) => {
     course.image = await getImageFromStorage(course.image);
   }))
   return courses.purchasedCourses;
@@ -80,7 +76,7 @@ const CourseSection = async({page , query , userID}:{ page:string | undefined , 
         <>
             <div className=" grid grid-cols-1 md:grid-cols-3 xl:grid-cols-4 gap-6 mt-4 ">
                 
-                {course.map(async (course : Course , index : number)=>{
+                {course.map(async (course : Omit<Course , "modules"> , index : number)=>{
                     return(
                         <div key={course.id} className="">
                             <CoursePreview course={course} index={index}  />

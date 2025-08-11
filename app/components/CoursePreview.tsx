@@ -4,7 +4,7 @@ import { Package } from "lucide-react";
 import BuyCourse from "./Button/BuyCourse";
 import Image from "next/image"
 
-const CoursePreviw = ({course } : {course: Course, index: number}) => {
+const CoursePreviw = ({course } : {course: Omit<Course , "modules">, index: number}) => {
     return(
         <Link href={`/course/${course.id}`}>
             <div  className="max-h-fit flex flex-row-reverse md:flex-col gap-2 overflow-hidden p-2 md:p-0 
@@ -23,7 +23,7 @@ const CoursePreviw = ({course } : {course: Course, index: number}) => {
                     <div className="flex flex-row gap-2">
                         <div className="md:hidden p-1 bg-gray-400 bg-opacity-20 rounded-md flex flex-row items-center 
                             gap-1 relative text-sm/4 w-fit ">
-                            <Package size={14} className="w-[14] h-[14]  "/> {course.modules.length}
+                            <Package size={14} className="w-[14] h-[14]  "/> {course.modulesCount}
                         </div>
                         {course.price > 0 ?
                             <div className="md:hidden p-1 bg-gray-400 bg-opacity-20 rounded-md flex flex-row items-center 
@@ -35,7 +35,7 @@ const CoursePreviw = ({course } : {course: Course, index: number}) => {
                 </div>
                 <div className="md:flex flex-row  hidden gap-2 text-sm px-2 md:pb-2 ">
                     <div className="p-1 bg-gray-400 bg-opacity-20  rounded-md flex flex-row items-center gap-1 relative text-sm/4 ">
-                        <Package size={14} className="w-[14] h-[14]  "/> {course.modules.length}
+                        <Package size={14} className="w-[14] h-[14]  "/> {course.modulesCount}
                     </div>
                     {course.price > 0 ? 
                         <div className="p-1 bg-gray-400 bg-opacity-20  rounded-md flex flex-row items-center relative text-sm/4 ">
