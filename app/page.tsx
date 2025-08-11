@@ -41,7 +41,7 @@ export default async function Home({searchParams}:any) {
         {query ? 
           <RemoveSearch />
         : null}
-        <CourseSection  page={page} query={query} userID={user?.id}/>
+        <CourseSection  page={page} query={query} />
       </main>
     </div>
   );
