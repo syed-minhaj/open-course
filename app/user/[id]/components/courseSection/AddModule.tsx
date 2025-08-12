@@ -33,14 +33,13 @@ const AddModule = ({moduleAdded} : {moduleAdded: (modules: Omit<module , 'indexI
 
     return (
             
-        <div className="w-full flex flex-row gap-1 bg-opacity-25 bg-white rounded 
-            dark:bg-opacity-15 dark:bg-black p-2 border border-white dark:border-black flex-wrap ">
+        <div className="w-full flex flex-row gap-1  rounded  flex-wrap ">
             <ImageInput onImageChange={setImage} simple clearImage={clearImage}  />
-            <input className=" p-2 rounded border-2  dark:border-black bg-opacity-25 bg-white flex-1
-                dark:bg-opacity-25 dark:bg-black  placeholder-gray-800" placeholder="Module Name" 
+            <input className=" p-2 flex-1 rounded border-2  border-gray-400 hover:border-gray-300  dark:border-gray-600 
+                 dark:hover:border-gray-500 bg-transparent placeholder-gray-400" placeholder="Module Name" 
                 type="text" required onChange={(e)=>{setName(e.target.value)}} value={name}/>
-            <input className=" p-2 rounded border-2  dark:border-black bg-opacity-25 bg-white flex-1
-                dark:bg-opacity-25 dark:bg-black  placeholder-gray-800" placeholder="Content url" 
+            <input className=" p-2 flex-1 rounded border-2 border-gray-400 hover:border-gray-300  dark:border-gray-600 
+                 dark:hover:border-gray-500 bg-transparent placeholder-gray-400" placeholder="Content url" 
                 type="text" required onChange={(e)=>{setLink(e.target.value)}} value={link}/>
             <button onClick={()=>{save()}}
                 className="p-1 px-2 rounded bg-secondary text-prePrimary"> 

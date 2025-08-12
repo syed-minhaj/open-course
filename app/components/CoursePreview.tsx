@@ -9,7 +9,7 @@ const CoursePreviw = ({course } : {course: Omit<Course , "modules">, index: numb
         <Link href={`/course/${course.id}`}>
             <div  className="max-h-fit flex flex-row-reverse md:flex-col gap-2 overflow-hidden p-2 md:p-0 
             bg-prePrimary rounded-lg  shadow-sm shadow-slate-700 dark:shadow-black drop-shadow-sm 
-            hover:shadow-xl hover:shadow-slate-700 dark:hover:shadow-black transition-all duration-300">
+            hover:shadow-xl hover:shadow-slate-700 dark:hover:shadow-black transition-shadow duration-300">
                 
                 <div className="w-28 flex flex-col justify-between  md:w-full   ">
                     <Image src={course.image} alt={course.name} height={128} width={205}

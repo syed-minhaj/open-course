@@ -73,15 +73,15 @@ const EditModule = ({moduleEdited , module , index} : {moduleEdited: (modules: m
         dragListener={false} dragControls={controls}
       >
         {!isEditting ? (
-          <div className="w-full flex flex-row gap-1 bg-opacity-25 bg-white rounded flex-wrap 
-              dark:bg-opacity-15 dark:bg-black p-2 border dark:border-black border-white">
+          <div className="w-full flex flex-row gap-1  rounded flex-wrap border-2 p-1 border-gray-400 
+          hover:border-gray-300  dark:border-gray-600  dark:hover:border-gray-500 bg-transparent">
             <div ref={elementRef} className="h-fit w-fit reorder-handle cursor-move touch-none my-auto "
               onPointerDown={(e) => controls.start(e)}
               onTouchStart={handleDragStart}
             >
               <MoveVertical className="w-6 h-6  opacity-30 "/>
             </div>
-            <h1 className="text-primary p-2 m-auto">{index + 1}</h1>
+            <h1 className=" p-2 m-auto">{index + 1}</h1>
             {imageUrl && (
                 <img
                   src={imageUrl}
@@ -89,8 +89,8 @@ const EditModule = ({moduleEdited , module , index} : {moduleEdited: (modules: m
                   className="w-24 h-16 object-cover rounded-lg"
                 />
             )}
-            <h1 className="text-primary text-lg p-2 my-auto flex-1 min-w-fit">{name}</h1>
-            <h2 className="text-primary text-sm p-2 my-auto flex-1 min-w-fit opacity-45 ">{link}</h2>
+            <h1 className="text-lg p-2 my-auto flex-1 min-w-fit">{name}</h1>
+            <h2 className="text-sm p-2 my-auto flex-1 min-w-fit opacity-45 ">{link}</h2>
             <button 
               onClick={() => setIsEditting(true)}
               className="p-1 px-2 rounded bg-secondary text-prePrimary mx-auto py-auto "
@@ -99,15 +99,14 @@ const EditModule = ({moduleEdited , module , index} : {moduleEdited: (modules: m
             </button>
           </div>
         ) : (
-          <div className="w-full flex flex-row gap-1 bg-opacity-25  bg-white dark:bg-black dark:bg-opacity-15 
-                rounded flex-wrap p-2 border border-white dark:border-black ">
+          <div className="w-full flex flex-row gap-1 rounded flex-wrap  ">
             <ImageInput onImageChange={setImage} simple  defaultImage={imageUrl}/>
-            <input className="p-2 rounded border-2 dark:border-black bg-opacity-25 bg-white flex-1
-                dark:bg-opacity-25 dark:bg-black placeholder-gray-800"
+            <input className="p-2 flex-1 rounded border-2 border-gray-400 hover:border-gray-300  dark:border-gray-600 
+                 dark:hover:border-gray-500 bg-transparent placeholder-gray-400"
               placeholder="Module Name" type="text" required onChange={(e) => setName(e.target.value)} value={name}
             />
-            <input className="p-2 rounded border-2 dark:border-black bg-opacity-25 bg-white flex-1
-                dark:bg-opacity-25 dark:bg-black placeholder-gray-800"
+            <input className="p-2 flex-1 rounded border-2 border-gray-400 hover:border-gray-300  dark:border-gray-600 
+                 dark:hover:border-gray-500 bg-transparent placeholder-gray-400"
               placeholder="Content url" type="text"required onChange={(e) => setLink(e.target.value)} value={link}
             />
             <button

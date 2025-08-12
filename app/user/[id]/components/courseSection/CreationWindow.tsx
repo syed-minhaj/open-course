@@ -107,8 +107,8 @@ const CreationWindow = ({userID, admin , setWindowOpen} : {userID: string , admi
     
 
     return(
-        <div className="w-screen h-screen fixed top-0 left-0 z-20  
-         bg-black bg-opacity-25 backdrop-blur-sm flex justify-center items-center">
+        <div className="w-screen h-screen fixed top-0 left-0 z-20  text-white
+         bg-black bg-opacity-60 backdrop-blur-md flex justify-center items-center">
             <button onClick={()=>{setWindowOpen(false)}}
                 className= "p-1 px-2 rounded bg-secondary text-prePrimary absolute right-5 top-5 z-30 "> close </button>
             {isCreating ? <div className="w-full h-full absolute top-0 left-0 z-20  
@@ -116,13 +116,14 @@ const CreationWindow = ({userID, admin , setWindowOpen} : {userID: string , admi
                     {isCreating}
             </div> : null}
 
-            <div className="w-5/6 h-5/6 bg-white dark:bg-black rounded overflow-scroll overflow-x-hidden bg-opacity-25 
-                scrollbar-hide scrollbar-thumb-primary scrollbar-track-primary  dark:bg-opacity-25 relative ">
+            <div className="w-screen h-screen sm:w-11/12 sm:h-5/6 bg-white dark:bg-black rounded overflow-scroll overflow-x-hidden bg-opacity-25 
+                scrollbar-hide scrollbar-thumb-primary scrollbar-track-primary  dark:bg-opacity-25 relative backdrop-blur-sm border-2 p-1 
+                border-gray-400  dark:border-gray-600  ">
                 <div className="w-[100d%]  m-2 flex gap-2 flex-col ">
                 
-                    <h1 className="  text-primary p-2  ">Create a Course</h1>
+                    <h1 className="  text-gray-200 py-2  ">Create Course</h1>
                     <CourseInfo setImage={setImage} setName={setName} setDescription={setDescription} setPrice={setPrice}/>
-                    <h2 className="text-sm  text-primary p-1  ">Add Modules</h2>
+                    <h2 className="text-sm  text-gray-200 p-1  ">Add Modules</h2>
                     <AddModule moduleAdded={modelAdded}/>
                     <Reorder.Group className="flex flex-col gap-1" as="ol" 
                     values={modules} onReorder={afterReorder} axis="y" >
@@ -134,7 +135,7 @@ const CreationWindow = ({userID, admin , setWindowOpen} : {userID: string , admi
                     </Reorder.Group>
                     
                 </div>
-                <div className="absolute right-0 p-5 ">
+                <div className="absolute right-0 p-3 py-5 ">
                     <button onClick={()=>{create_Course()}}
                         className="p-1 px-2 rounded bg-secondary text-prePrimary   "> 
                         <PackageCheck className="w-6 h-6"/>

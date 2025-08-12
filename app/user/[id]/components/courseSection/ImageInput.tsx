@@ -78,7 +78,7 @@ const ImageInput: React.FC<ImageInputProps> = ({
         <div
           className={`relative border-2 border-dashed rounded-lg ${simple ? 'p-2' : 'p-8'} text-center cursor-pointer
             ${isDragging ? 'border-blue-500 bg-blue-50' :
-               'border-gray-300 hover:border-gray-400  dark:border-gray-600 dark:hover:border-gray-500' }
+               'border-gray-400 hover:border-gray-300  dark:border-gray-600 dark:hover:border-gray-500' }
             transition-colors duration-200`}
           onDragOver={handleDragOver} onDragLeave={handleDragLeave}
           onDrop={handleDrop} onClick={() => document.getElementById(fileInputId)?.click()}
@@ -86,8 +86,8 @@ const ImageInput: React.FC<ImageInputProps> = ({
           <input type="file" id={fileInputId} className="hidden"
             accept={acceptedTypes.join(',')} onChange={handleFileSelect} />
           <div className="space-y-4">
-            <div className="text-4xl text-gray-800 dark:text-gray-800 ">⇪</div>
-            <div className={`text-lg font-medium text-gray-700 ${simple ? 'hidden' : ' '}`}>
+            <div className="text-4xl text-gray-400 ">⇪</div>
+            <div className={`text-lg font-medium text-gray-400 ${simple ? 'hidden' : ' '}`}>
               Drop your image here, or click to browse
             </div>
             <p className={`text-sm text-gray-500 ${simple ? 'hidden' : ' '} `}>
