@@ -10,8 +10,8 @@
   --color-accent: hsl(169, 100%, 24%);
 }
 .dark {
-  --color-primary: hsl(198, 80%, 8%);
-  --color-prePrimary: hsl(197, 80%, 12%);
+  --color-primary: hsl(198, 53%, 10%);
+  --color-prePrimary: hsl(198, 53%, 12%);
   --color-secondary: hsl(197, 80%, 90%);
   --color-tertiary: hsl(243, 80%, 80%);
   --color-accent: hsl(160, 100%, 44%);
