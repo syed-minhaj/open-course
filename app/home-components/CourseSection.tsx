@@ -60,7 +60,7 @@ const getTotal = async(query : string | undefined) => {
 }
 
 const getfeaturedCourses = async() => {
-  return await prisma.course.findMany({
+  const courses = await prisma.course.findMany({
     where: {
         id : {
             in: [
@@ -77,6 +77,10 @@ const getfeaturedCourses = async() => {
         image : true
     }
   })
+  await Promise.all(courses.map(async(course : {id : string , name : string , image : string}) => {
+    course.image = await getImageFromStorage(course.image , true);
+  }))
+  return courses;
 }
 
 const featuredCourse = await getfeaturedCourses();
