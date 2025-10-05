@@ -40,7 +40,7 @@ const ImageComponent = ({user, admin} : {user: adminUser | nonAdminUser, admin: 
     return (
         <>  
         <Image src={`${user.image}`} alt="profile image" width={144} height={144}
-            className={`bg-accent aspect-square w-28 md:w-36 rounded-full 
+            className={`aspect-square w-28 md:w-36 rounded-full 
             ${imageUploading === true ? "animate-pulse" : ""}`}
         />
         {admin === true ?
