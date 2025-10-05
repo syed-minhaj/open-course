@@ -38,8 +38,8 @@ export default function RootLayout({
         <Providers>
           <NextTopLoader/>
             {children}
+            <Toaster position="top-center"  />
         </Providers>
-        <Toaster position="top-center" />
       </body>
     </html>
   );
