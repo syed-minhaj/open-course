@@ -2,6 +2,7 @@
 import {stripeAccountDashboard , editStripeAccount} from "@/app/actions/actions";
 import { useState } from "react";
 import { Loader2Icon } from "lucide-react"
+import { toast } from "sonner";
 
 const EditStripeAccountComponent = () => {
     const [loadingDashboard , setLoadingDashboard] = useState(false);
@@ -10,7 +11,7 @@ const EditStripeAccountComponent = () => {
         setLoadingDashboard(true);
         stripeAccountDashboard().then((res)=>{
             if(res.err){
-                alert(res.err);
+                toast.error(res.err);
                 setLoadingDashboard(false);
                 return;
             }
@@ -23,7 +24,7 @@ const EditStripeAccountComponent = () => {
         setLoadingEditStripe(true);
         editStripeAccount().then((res)=>{
             if(res.err){
-                alert(res.err);
+                toast.error(res.err);
                 setLoadingEditStripe(false);
                 return;
             }

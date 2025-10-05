@@ -2,6 +2,7 @@
 import { useState } from "react";
 import { createStripeAccount } from "@/app/actions/actions";
 import { Loader2Icon } from "lucide-react"
+import { toast } from "sonner";
 
 const AddButton = () => {
     
@@ -10,7 +11,7 @@ const AddButton = () => {
         setAdding(true);
         createStripeAccount().then((res)=>{
             if(res.err){
-                alert(res.err);
+                toast.error(res.err);
                 setAdding(false);
                 return;
             }

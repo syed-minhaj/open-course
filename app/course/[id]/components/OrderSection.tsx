@@ -5,8 +5,7 @@ import { AddToCart , RemoveFromCart } from "@/app/actions/course";
 import { useState } from "react";
 import { revalidatePath_fromClient } from "@/app/actions/actions";
 import { Loader2Icon } from "lucide-react"
-import { confirmAlert } from "react-confirm-alert";
-import 'react-confirm-alert/src/react-confirm-alert.css';
+import { toast } from "sonner";
 
 const OrderSection = ({courseID , coursePrice , inCart} : {courseID : string , coursePrice : number , inCart : boolean}) => {
 
@@ -17,7 +16,7 @@ const OrderSection = ({courseID , coursePrice , inCart} : {courseID : string , c
             setBuying(true);
             BuyCourse(courseID).then((res)=>{
                 if(res.err){
-                    alert(res.err);
+                    toast.error(res.err);
                     setBuying(false);
                     return;
                 }
@@ -29,20 +28,12 @@ const OrderSection = ({courseID , coursePrice , inCart} : {courseID : string , c
     }
 
     function confirmBuy(){
-        confirmAlert({
-          title: 'Buy Course',
-          message: 'Are you sure you want to buy this course?',
-          buttons: [
-            {
-              label: 'Yes',
-              onClick: () => Buy(),
-            },
-            {
-              label: 'No',
-              onClick: () => {},
-              style: {backgroundColor: 'rgba(0,0,0,0)' , color: 'rgb(51, 51, 51)' , border: '1px solid rgb(51, 51, 51)' }
+        toast.info('Are you sure you want to buy this course?',{
+            id: 'buyCourse',
+            action:{
+                label: 'Yes',
+                onClick: () => Buy()
             }
-          ]
         });
     }
 
@@ -52,13 +43,13 @@ const OrderSection = ({courseID , coursePrice , inCart} : {courseID : string , c
             RemoveFromCart(courseID).then(({err})=>{
                 setDisableCart(false);
                 revalidatePath_fromClient(`/course/${courseID}`);
-                if(err){alert(err)}
+                if(err){toast.error(err)}
             })
         }else{
             AddToCart(courseID).then(({err})=>{
                 setDisableCart(false);
                 revalidatePath_fromClient(`/course/${courseID}`);
-                if(err){alert(err)}
+                if(err){toast.error(err)}
             })
         }
     }

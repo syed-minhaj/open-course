@@ -4,6 +4,7 @@ import { useState } from "react";
 import { usePathname } from "next/navigation";
 import { revalidatePath_fromClient } from "@/app/actions/actions";
 import { Loader2Icon } from "lucide-react"
+import { toast } from "sonner";
 
 const BuyCourse = ({courseID , coursePrice} : {courseID : string , coursePrice : number}) => {
 
@@ -14,7 +15,7 @@ const BuyCourse = ({courseID , coursePrice} : {courseID : string , coursePrice :
         setBuying(true);
         BuyCourseFunc(courseID).then((res)=>{
             if(res.err){
-                alert(res.err);
+                toast.error(res.err);
                 setBuying(false);
                 return;
             }

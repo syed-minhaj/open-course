@@ -6,8 +6,7 @@ import OrderSection from "./components/OrderSection";
 import { useState } from "react";
 import { revalidatePath_fromClient } from "@/app/actions/actions";
 import { Loader2Icon } from "lucide-react"
-import { confirmAlert } from "react-confirm-alert";
-import 'react-confirm-alert/src/react-confirm-alert.css';
+import { toast } from "sonner";
 
 type course = {
     id: string,
@@ -24,31 +23,22 @@ const Hero = ({owned ,  course , inCart , admin} : {owned : boolean , course : c
         setDeleting(true);
         DeleteCourse(course.id).then((res)=>{
             if(res.err){
-                alert(`${res.err}`)
+                toast.error(`${res.err}`)
                 return;
             }
-            alert(`${course.name} deleted `);
+            toast.success(`${course.name} deleted `);
             revalidatePath_fromClient(document.referrer);
             window.history.back();
         })
     }
 
     function confirmDelete(){
-        confirmAlert({
-          title: 'Delete Course?',
-          message: 'Are you sure you want to delete this course?',
-          overlayClassName : "overlay-custom-class-name",
-          buttons: [
-            {
-              label: 'Yes',
-              onClick: () => deleteCourse(),
-              style: {backgroundColor: 'rgb(220,38,38)' }
-            },
-            {
-              label: 'No',
-              onClick: () => {}
+        toast.info("Do you want to delete this course?",{
+            id: "deleteCourse",
+            action:{
+                label: "Yes",
+                onClick: () => deleteCourse()
             }
-          ]
         });
     }
 

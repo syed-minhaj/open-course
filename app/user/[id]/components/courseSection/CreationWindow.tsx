@@ -9,6 +9,7 @@ import {PackageCheck} from "lucide-react";
 import { createCourse ,createModule, revalidatePath_fromClient } from "@/app/actions/actions";
 import { resizeFile } from "@/app/utils/imageResize";
 import { CheckNumberIs2DecimalPlace } from "@/app/utils";
+import { toast } from "sonner";
 
 const CreationWindow = ({userID, admin , setWindowOpen} : {userID: string , admin: boolean, setWindowOpen: React.Dispatch<React.SetStateAction<boolean>>}) => {
     
@@ -61,12 +62,12 @@ const CreationWindow = ({userID, admin , setWindowOpen} : {userID: string , admi
 
     async function create_Course() {
         if (!name || !description || !image) {
-            alert("Course name , description and image are required");
+            toast.info("Course name , description and image are required");
             return;
         }
         const {err} = CheckNumberIs2DecimalPlace(price);
         if(err){
-            alert("Price should be in 2 decimal place");
+            toast.info("Price should be in 2 decimal place");
             return;
         }
         setIsCreating(true);

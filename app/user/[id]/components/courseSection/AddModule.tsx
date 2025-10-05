@@ -3,6 +3,7 @@ import { useState } from "react";
 import ImageInput from "./ImageInput";
 import { CheckCheck } from "lucide-react";
 import { module_created as module } from "@/app/types";
+import { toast } from "sonner";
 
 const AddModule = ({moduleAdded} : {moduleAdded: (modules: Omit<module , 'indexInCourse'> ) => {error : string | null}}) => {
     
@@ -12,7 +13,7 @@ const AddModule = ({moduleAdded} : {moduleAdded: (modules: Omit<module , 'indexI
     const [clearImage , setClearImage] = useState<number>(0);
     function save(){
         if(!name || !link){
-            alert("Please fill all the fields[name , link]");
+            toast.error("Please fill all the fields[name , link]");
             return;
         }
         const module : Omit<module , 'indexInCourse'> = {
@@ -22,7 +23,7 @@ const AddModule = ({moduleAdded} : {moduleAdded: (modules: Omit<module , 'indexI
         }
         const {error} = moduleAdded(module);
         if(error){
-            alert(error);
+            toast.error(error);
             return;
         }
         setImage(null);
