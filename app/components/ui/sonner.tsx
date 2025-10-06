@@ -14,7 +14,8 @@ const Toaster = ({ ...props }: ToasterProps) => {
       className="toaster group"
       toastOptions={{
         style: {
-            background:"var(--color-primary)",
+            background:"var(--color-secondary)",
+            color:"var(--color-primary)"
         },
         classNames: {
           toast:
